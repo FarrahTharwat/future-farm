@@ -80,9 +80,10 @@ def build():
             rs = {}
             for rid in ROTATIONS:
                 w_, c_ = what_if(rid, rp, tc, clim, daily, rots, db, cal)
-                three = score_rotation({"water": w_, "climate": c_, "soil_health": all_scores[rid]["soil_health"]},
-                                       {k: WEIGHTS[k] for k in ("water", "climate", "soil_health")})
-                rs[rid] = {"water": w_, "climate": c_, "overall": three["overall"]}
+                full = score_rotation({"water": w_, "climate": c_,
+                                       "soil_health": all_scores[rid]["soil_health"],
+                                       "resilience": all_scores[rid]["resilience"]}, WEIGHTS)
+                rs[rid] = {"water": w_, "climate": c_, "overall": full["overall"]}
             variants.append({"rainfall_change_percent": rp, "temperature_change_c": tc, "rotation_scores": rs})
 
     return {
@@ -92,7 +93,7 @@ def build():
         "rotations": rotation_results,
         "ranking_stability": weight_sweep(all_scores, CRITERIA),
         "scenario_variants": variants,
-        "scenario_note": "Variant 'overall' uses water, climate and soil health only. Warming changes heat days but not ET0 yet.",
+        "scenario_note": "In the scenario grid, water and climate are recalculated; soil health and resilience are held at their baseline values. Warming changes heat days but not ET0 yet.",
         "limitations": ["Satellite soil moisture is not root-zone moisture", "Crop suitability requires local validation",
                         "Soil-health score is a checklist of potential benefits, not a measurement",
                         "Frost risk and soil salinity are not modelled"]}

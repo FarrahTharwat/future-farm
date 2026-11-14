@@ -165,59 +165,59 @@
         "current": {
           "water": 40.8,
           "climate": 84.5,
-          "overall": 58.8
+          "overall": 62.3
         },
         "alt_a": {
           "water": 53.4,
           "climate": 66.1,
+          "overall": 59.3
+        },
+        "alt_b": {
+          "water": 35.3,
+          "climate": 78.6,
+          "overall": 58.0
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": -20,
+      "temperature_change_c": 1.5,
+      "rotation_scores": {
+        "current": {
+          "water": 40.8,
+          "climate": 76.9,
+          "overall": 60.7
+        },
+        "alt_a": {
+          "water": 53.4,
+          "climate": 61.7,
+          "overall": 58.4
+        },
+        "alt_b": {
+          "water": 35.3,
+          "climate": 72.0,
+          "overall": 56.7
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": -20,
+      "temperature_change_c": 3,
+      "rotation_scores": {
+        "current": {
+          "water": 40.8,
+          "climate": 68.6,
+          "overall": 59.1
+        },
+        "alt_a": {
+          "water": 53.4,
+          "climate": 57.6,
+          "overall": 57.6
+        },
+        "alt_b": {
+          "water": 35.3,
+          "climate": 64.7,
           "overall": 55.2
-        },
-        "alt_b": {
-          "water": 35.3,
-          "climate": 78.6,
-          "overall": 54.1
-        }
-      }
-    },
-    {
-      "rainfall_change_percent": -20,
-      "temperature_change_c": 1.5,
-      "rotation_scores": {
-        "current": {
-          "water": 40.8,
-          "climate": 76.9,
-          "overall": 57.1
-        },
-        "alt_a": {
-          "water": 53.4,
-          "climate": 61.7,
-          "overall": 54.2
-        },
-        "alt_b": {
-          "water": 35.3,
-          "climate": 72.0,
-          "overall": 52.7
-        }
-      }
-    },
-    {
-      "rainfall_change_percent": -20,
-      "temperature_change_c": 3,
-      "rotation_scores": {
-        "current": {
-          "water": 40.8,
-          "climate": 68.6,
-          "overall": 55.3
-        },
-        "alt_a": {
-          "water": 53.4,
-          "climate": 57.6,
-          "overall": 53.3
-        },
-        "alt_b": {
-          "water": 35.3,
-          "climate": 64.7,
-          "overall": 51.0
         }
       }
     },
@@ -228,17 +228,17 @@
         "current": {
           "water": 42.0,
           "climate": 84.5,
-          "overall": 59.4
+          "overall": 62.7
         },
         "alt_a": {
           "water": 54.3,
           "climate": 66.1,
-          "overall": 55.6
+          "overall": 59.6
         },
         "alt_b": {
           "water": 36.9,
           "climate": 78.6,
-          "overall": 54.8
+          "overall": 58.6
         }
       }
     },
@@ -249,17 +249,17 @@
         "current": {
           "water": 42.0,
           "climate": 76.9,
-          "overall": 57.7
+          "overall": 61.2
         },
         "alt_a": {
           "water": 54.3,
           "climate": 61.7,
-          "overall": 54.6
+          "overall": 58.7
         },
         "alt_b": {
           "water": 36.9,
           "climate": 72.0,
-          "overall": 53.4
+          "overall": 57.3
         }
       }
     },
@@ -270,17 +270,17 @@
         "current": {
           "water": 42.0,
           "climate": 68.6,
-          "overall": 55.8
+          "overall": 59.6
         },
         "alt_a": {
           "water": 54.3,
           "climate": 57.6,
-          "overall": 53.7
+          "overall": 57.9
         },
         "alt_b": {
           "water": 36.9,
           "climate": 64.7,
-          "overall": 51.8
+          "overall": 55.9
         }
       }
     },
@@ -291,17 +291,17 @@
         "current": {
           "water": 43.1,
           "climate": 84.5,
-          "overall": 59.9
+          "overall": 63.2
         },
         "alt_a": {
           "water": 55.3,
           "climate": 66.1,
-          "overall": 56.1
+          "overall": 60.0
         },
         "alt_b": {
           "water": 38.4,
           "climate": 78.6,
-          "overall": 55.5
+          "overall": 59.2
         }
       }
     },
@@ -312,17 +312,17 @@
         "current": {
           "water": 43.1,
           "climate": 76.9,
-          "overall": 58.2
+          "overall": 61.7
         },
         "alt_a": {
           "water": 55.3,
           "climate": 61.7,
-          "overall": 55.1
+          "overall": 59.1
         },
         "alt_b": {
           "water": 38.4,
           "climate": 72.0,
-          "overall": 54.0
+          "overall": 57.9
         }
       }
     },
@@ -333,22 +333,22 @@
         "current": {
           "water": 43.1,
           "climate": 68.6,
-          "overall": 56.3
+          "overall": 60.0
         },
         "alt_a": {
           "water": 55.3,
           "climate": 57.6,
-          "overall": 54.2
+          "overall": 58.3
         },
         "alt_b": {
           "water": 38.4,
           "climate": 64.7,
-          "overall": 52.4
+          "overall": 56.5
         }
       }
     }
   ],
-  "scenario_note": "Variant 'overall' uses water, climate and soil health only. Warming changes heat days but not ET0 yet.",
+  "scenario_note": "In the scenario grid, water and climate are recalculated; soil health and resilience are held at their baseline values. Warming changes heat days but not ET0 yet.",
   "limitations": [
     "Satellite soil moisture is not root-zone moisture",
     "Crop suitability requires local validation",
