@@ -40,3 +40,41 @@ def water_need(crop_id, clim, db, cal):
     irrigation = max(need - rain, 0.0)
     return {"need_mm": round(need), "rain_mm": round(rain), "irrigation_needed_mm": round(irrigation),
             "rain_cover_score": round(100 * min(rain / need, 1.0), 1)}
+
+
+# ---------------------------------------------------------------------------
+# Rotation level
+# ---------------------------------------------------------------------------
+# UNCONFIRMED placeholder: midpoint of the Newlands Project allocation range in
+# local_irrigation_observations.csv (row O05: 1067-1372 mm). Verify before using in any claim.
+WATER_SUPPLY_MM = 1220
+
+def load_rotations(path="data/agricultural/rotation_strategies.csv"):
+    return pd.read_csv(path)
+
+def rotation_water(rotation_id, rotations, clim, db, cal, supply_mm=WATER_SUPPLY_MM):
+    """Water picture for one rotation, averaged per year over its cycle.
+
+    Every step (one crop in one season) is costed with water_need(); the rotation's yearly irrigation
+    need is the cycle total divided by cycle_years. The 0-100 score is the share of the assumed water
+    supply that is LEFT after the rotation takes what it needs:  100 * (1 - yearly irrigation / supply).
+    Cover crops count: they use water too.
+    """
+    steps = rotations[rotations["rotation_id"] == rotation_id].sort_values("step")
+    cycle = int(steps["cycle_years"].iloc[0])
+    per_step = []
+    for crop in steps["crop_id"]:
+        per_step.append({"crop_id": crop, **water_need(crop, clim, db, cal)})
+    need = sum(s["need_mm"] for s in per_step)
+    rain = sum(s["rain_mm"] for s in per_step)
+    irrigation = sum(s["irrigation_needed_mm"] for s in per_step)
+    yearly_irrigation = irrigation / cycle
+    return {
+        "rotation_id": rotation_id,
+        "cycle_years": cycle,
+        "yearly_need_mm": round(need / cycle),
+        "yearly_rain_mm": round(rain / cycle),
+        "yearly_irrigation_mm": round(yearly_irrigation),
+        "water_score": round(100 * max(0.0, 1 - yearly_irrigation / supply_mm), 1),
+        "steps": per_step,
+    }
