@@ -1,0 +1,12 @@
+{
+  "_note": "TEMPLATE. Replace every TODO with researched, sourced values. DS2 owns this file.",
+  "region": "TODO pilot region",
+  "rotations": [
+    {"id": "current", "name": "TODO current rotation (baseline)", "justification": "TODO",
+     "seasons": [{"crop": "TODO", "plant_month": 0, "harvest_month": 0}]},
+    {"id": "alt_a", "name": "TODO alternative A", "justification": "TODO",
+     "seasons": [{"crop": "TODO", "plant_month": 0, "harvest_month": 0}]},
+    {"id": "alt_b", "name": "TODO alternative B", "justification": "TODO",
+     "seasons": [{"crop": "TODO", "plant_month": 0, "harvest_month": 0}]}
+  ]
+}
