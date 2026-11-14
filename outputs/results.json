@@ -1,9 +1,9 @@
 {
-  "mock": true,
+  "data_status": "PROTOTYPE - placeholder inputs, not validated results (temporary ET0)",
   "farm": {
+    "name": "Fallon, Nevada (pilot)",
     "latitude": 39.47,
     "longitude": -118.78,
-    "soil_source": "SoilGrids",
     "analysis_period": "2001-2025"
   },
   "farmer_priorities": {
@@ -15,107 +15,344 @@
   "rotations": [
     {
       "id": "current",
-      "name": "Current rotation",
+      "name": "Current rotation (baseline: alfalfa stand)",
       "crops": [
-        "Crop A",
-        "Crop B"
+        "alfalfa",
+        "winter_wheat"
       ],
+      "cycle_years": 5,
       "scores": {
-        "water": 45,
-        "climate": 60,
-        "soil_health": 50,
-        "resilience": 40,
-        "overall": 49.0
+        "water": 42.0,
+        "climate": 84.5,
+        "soil_health": 65.8,
+        "resilience": 93.0,
+        "overall": 62.7
       },
       "contributions": {
-        "water": 18.0,
-        "climate": 12.0,
-        "soil_health": 15.0,
-        "resilience": 4.0
+        "water": 16.8,
+        "climate": 16.9,
+        "soil_health": 19.74,
+        "resilience": 9.3
+      },
+      "details": {
+        "yearly_irrigation_mm": 708,
+        "yearly_rain_mm": 72,
+        "heat_days_per_year": 33.1,
+        "bare_months_per_year": 5.8
       },
       "explanations": [
-        "Current rotation: its biggest contribution to the overall score comes from water suitability.",
-        "Its weakest area is climate resilience (score 40), which needs local review."
+        "Current rotation (baseline: alfalfa stand): its biggest contribution to the overall score comes from soil-health potential.",
+        "Its weakest area is water suitability (score 42.0), which needs local review.",
+        "Needs about 708 mm of irrigation per year; rain covers about 72 mm.",
+        "About 33.1 heat-stress days per year across its growing seasons.",
+        "Roughly 5.8 months per year without living green cover.",
+        "Under -20% rain and +1.5 C it keeps 93.0% of its water and climate suitability."
       ],
       "uncertainty": {
-        "level": "moderate",
+        "level": "high",
         "reasons": [
-          "Soil information is estimated"
+          "Evapotranspiration (ET0) is a TEMPORARY estimate, not NASA-derived",
+          "Crop coefficients, heat limits and soil ratings are unverified placeholders",
+          "Soil properties (SoilGrids) are not used yet",
+          "Satellite soil moisture is not used yet"
         ]
       }
     },
     {
       "id": "alt_a",
-      "name": "Alternative A",
+      "name": "Alternative A: Water-conserving small-grain and pea rotation",
       "crops": [
-        "Crop A",
-        "Crop C",
-        "Cover crop"
+        "barley",
+        "field_pea",
+        "winter_wheat"
       ],
+      "cycle_years": 3,
       "scores": {
-        "water": 60,
-        "climate": 62,
-        "soil_health": 70,
-        "resilience": 58,
-        "overall": 63.2
+        "water": 54.3,
+        "climate": 66.1,
+        "soil_health": 50.4,
+        "resilience": 95.6,
+        "overall": 59.6
       },
       "contributions": {
-        "water": 24.0,
-        "climate": 12.4,
-        "soil_health": 21.0,
-        "resilience": 5.8
+        "water": 21.72,
+        "climate": 13.22,
+        "soil_health": 15.12,
+        "resilience": 9.56
+      },
+      "details": {
+        "yearly_irrigation_mm": 557,
+        "yearly_rain_mm": 57,
+        "heat_days_per_year": 51.7,
+        "bare_months_per_year": 7.0
       },
       "explanations": [
-        "Alternative A: its biggest contribution to the overall score comes from water suitability.",
-        "Its weakest area is climate resilience (score 58), which needs local review."
+        "Alternative A: Water-conserving small-grain and pea rotation: its biggest contribution to the overall score comes from water suitability.",
+        "Its weakest area is soil-health potential (score 50.4), which needs local review.",
+        "Needs about 557 mm of irrigation per year; rain covers about 57 mm.",
+        "About 51.7 heat-stress days per year across its growing seasons.",
+        "Roughly 7.0 months per year without living green cover.",
+        "Under -20% rain and +1.5 C it keeps 95.6% of its water and climate suitability."
       ],
       "uncertainty": {
-        "level": "moderate",
+        "level": "high",
         "reasons": [
-          "Soil information is estimated"
+          "Evapotranspiration (ET0) is a TEMPORARY estimate, not NASA-derived",
+          "Crop coefficients, heat limits and soil ratings are unverified placeholders",
+          "Soil properties (SoilGrids) are not used yet",
+          "Satellite soil moisture is not used yet"
         ]
       }
     },
     {
       "id": "alt_b",
-      "name": "Alternative B",
+      "name": "Alternative B: Soil-health rotation with legume and winter cover",
       "crops": [
-        "Crop D",
-        "Crop E"
+        "corn_silage",
+        "cereal_rye",
+        "field_pea",
+        "hairy_vetch"
       ],
+      "cycle_years": 2,
       "scores": {
-        "water": 75,
-        "climate": 55,
-        "soil_health": 55,
-        "resilience": 68,
-        "overall": 64.3
+        "water": 36.9,
+        "climate": 78.6,
+        "soil_health": 62.9,
+        "resilience": 92.9,
+        "overall": 58.6
       },
       "contributions": {
-        "water": 30.0,
-        "climate": 11.0,
-        "soil_health": 16.5,
-        "resilience": 6.8
+        "water": 14.76,
+        "climate": 15.72,
+        "soil_health": 18.87,
+        "resilience": 9.29
+      },
+      "details": {
+        "yearly_irrigation_mm": 770,
+        "yearly_rain_mm": 94,
+        "heat_days_per_year": 52.3,
+        "bare_months_per_year": 4.5
       },
       "explanations": [
-        "Alternative B: its biggest contribution to the overall score comes from water suitability.",
-        "Its weakest area is climate suitability (score 55), which needs local review."
+        "Alternative B: Soil-health rotation with legume and winter cover: its biggest contribution to the overall score comes from soil-health potential.",
+        "Its weakest area is water suitability (score 36.9), which needs local review.",
+        "Needs about 770 mm of irrigation per year; rain covers about 94 mm.",
+        "About 52.3 heat-stress days per year across its growing seasons.",
+        "Roughly 4.5 months per year without living green cover.",
+        "Under -20% rain and +1.5 C it keeps 92.9% of its water and climate suitability."
       ],
       "uncertainty": {
-        "level": "moderate",
+        "level": "high",
         "reasons": [
-          "Soil information is estimated"
+          "Evapotranspiration (ET0) is a TEMPORARY estimate, not NASA-derived",
+          "Crop coefficients, heat limits and soil ratings are unverified placeholders",
+          "Soil properties (SoilGrids) are not used yet",
+          "Satellite soil moisture is not used yet"
         ]
       }
     }
   ],
   "ranking_stability": {
-    "current": 0.0,
-    "alt_a": 0.46,
-    "alt_b": 0.54
+    "current": 0.74,
+    "alt_a": 0.26,
+    "alt_b": 0.0
   },
-  "scenario_variants": [],
+  "scenario_variants": [
+    {
+      "rainfall_change_percent": -20,
+      "temperature_change_c": 0,
+      "rotation_scores": {
+        "current": {
+          "water": 40.8,
+          "climate": 84.5,
+          "overall": 58.8
+        },
+        "alt_a": {
+          "water": 53.4,
+          "climate": 66.1,
+          "overall": 55.2
+        },
+        "alt_b": {
+          "water": 35.3,
+          "climate": 78.6,
+          "overall": 54.1
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": -20,
+      "temperature_change_c": 1.5,
+      "rotation_scores": {
+        "current": {
+          "water": 40.8,
+          "climate": 76.9,
+          "overall": 57.1
+        },
+        "alt_a": {
+          "water": 53.4,
+          "climate": 61.7,
+          "overall": 54.2
+        },
+        "alt_b": {
+          "water": 35.3,
+          "climate": 72.0,
+          "overall": 52.7
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": -20,
+      "temperature_change_c": 3,
+      "rotation_scores": {
+        "current": {
+          "water": 40.8,
+          "climate": 68.6,
+          "overall": 55.3
+        },
+        "alt_a": {
+          "water": 53.4,
+          "climate": 57.6,
+          "overall": 53.3
+        },
+        "alt_b": {
+          "water": 35.3,
+          "climate": 64.7,
+          "overall": 51.0
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": 0,
+      "temperature_change_c": 0,
+      "rotation_scores": {
+        "current": {
+          "water": 42.0,
+          "climate": 84.5,
+          "overall": 59.4
+        },
+        "alt_a": {
+          "water": 54.3,
+          "climate": 66.1,
+          "overall": 55.6
+        },
+        "alt_b": {
+          "water": 36.9,
+          "climate": 78.6,
+          "overall": 54.8
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": 0,
+      "temperature_change_c": 1.5,
+      "rotation_scores": {
+        "current": {
+          "water": 42.0,
+          "climate": 76.9,
+          "overall": 57.7
+        },
+        "alt_a": {
+          "water": 54.3,
+          "climate": 61.7,
+          "overall": 54.6
+        },
+        "alt_b": {
+          "water": 36.9,
+          "climate": 72.0,
+          "overall": 53.4
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": 0,
+      "temperature_change_c": 3,
+      "rotation_scores": {
+        "current": {
+          "water": 42.0,
+          "climate": 68.6,
+          "overall": 55.8
+        },
+        "alt_a": {
+          "water": 54.3,
+          "climate": 57.6,
+          "overall": 53.7
+        },
+        "alt_b": {
+          "water": 36.9,
+          "climate": 64.7,
+          "overall": 51.8
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": 20,
+      "temperature_change_c": 0,
+      "rotation_scores": {
+        "current": {
+          "water": 43.1,
+          "climate": 84.5,
+          "overall": 59.9
+        },
+        "alt_a": {
+          "water": 55.3,
+          "climate": 66.1,
+          "overall": 56.1
+        },
+        "alt_b": {
+          "water": 38.4,
+          "climate": 78.6,
+          "overall": 55.5
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": 20,
+      "temperature_change_c": 1.5,
+      "rotation_scores": {
+        "current": {
+          "water": 43.1,
+          "climate": 76.9,
+          "overall": 58.2
+        },
+        "alt_a": {
+          "water": 55.3,
+          "climate": 61.7,
+          "overall": 55.1
+        },
+        "alt_b": {
+          "water": 38.4,
+          "climate": 72.0,
+          "overall": 54.0
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": 20,
+      "temperature_change_c": 3,
+      "rotation_scores": {
+        "current": {
+          "water": 43.1,
+          "climate": 68.6,
+          "overall": 56.3
+        },
+        "alt_a": {
+          "water": 55.3,
+          "climate": 57.6,
+          "overall": 54.2
+        },
+        "alt_b": {
+          "water": 38.4,
+          "climate": 64.7,
+          "overall": 52.4
+        }
+      }
+    }
+  ],
+  "scenario_note": "Variant 'overall' uses water, climate and soil health only. Warming changes heat days but not ET0 yet.",
   "limitations": [
     "Satellite soil moisture is not root-zone moisture",
-    "Crop suitability requires local validation"
+    "Crop suitability requires local validation",
+    "Soil-health score is a checklist of potential benefits, not a measurement",
+    "Frost risk and soil salinity are not modelled"
   ]
 }
