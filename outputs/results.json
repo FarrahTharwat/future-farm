@@ -1,0 +1,121 @@
+{
+  "mock": true,
+  "farm": {
+    "latitude": 39.47,
+    "longitude": -118.78,
+    "soil_source": "SoilGrids",
+    "analysis_period": "2001-2025"
+  },
+  "farmer_priorities": {
+    "water": 40,
+    "climate": 20,
+    "soil_health": 30,
+    "resilience": 10
+  },
+  "rotations": [
+    {
+      "id": "current",
+      "name": "Current rotation",
+      "crops": [
+        "Crop A",
+        "Crop B"
+      ],
+      "scores": {
+        "water": 45,
+        "climate": 60,
+        "soil_health": 50,
+        "resilience": 40,
+        "overall": 49.0
+      },
+      "contributions": {
+        "water": 18.0,
+        "climate": 12.0,
+        "soil_health": 15.0,
+        "resilience": 4.0
+      },
+      "explanations": [
+        "Current rotation: its biggest contribution to the overall score comes from water suitability.",
+        "Its weakest area is climate resilience (score 40), which needs local review."
+      ],
+      "uncertainty": {
+        "level": "moderate",
+        "reasons": [
+          "Soil information is estimated"
+        ]
+      }
+    },
+    {
+      "id": "alt_a",
+      "name": "Alternative A",
+      "crops": [
+        "Crop A",
+        "Crop C",
+        "Cover crop"
+      ],
+      "scores": {
+        "water": 60,
+        "climate": 62,
+        "soil_health": 70,
+        "resilience": 58,
+        "overall": 63.2
+      },
+      "contributions": {
+        "water": 24.0,
+        "climate": 12.4,
+        "soil_health": 21.0,
+        "resilience": 5.8
+      },
+      "explanations": [
+        "Alternative A: its biggest contribution to the overall score comes from water suitability.",
+        "Its weakest area is climate resilience (score 58), which needs local review."
+      ],
+      "uncertainty": {
+        "level": "moderate",
+        "reasons": [
+          "Soil information is estimated"
+        ]
+      }
+    },
+    {
+      "id": "alt_b",
+      "name": "Alternative B",
+      "crops": [
+        "Crop D",
+        "Crop E"
+      ],
+      "scores": {
+        "water": 75,
+        "climate": 55,
+        "soil_health": 55,
+        "resilience": 68,
+        "overall": 64.3
+      },
+      "contributions": {
+        "water": 30.0,
+        "climate": 11.0,
+        "soil_health": 16.5,
+        "resilience": 6.8
+      },
+      "explanations": [
+        "Alternative B: its biggest contribution to the overall score comes from water suitability.",
+        "Its weakest area is climate suitability (score 55), which needs local review."
+      ],
+      "uncertainty": {
+        "level": "moderate",
+        "reasons": [
+          "Soil information is estimated"
+        ]
+      }
+    }
+  ],
+  "ranking_stability": {
+    "current": 0.0,
+    "alt_a": 0.46,
+    "alt_b": 0.54
+  },
+  "scenario_variants": [],
+  "limitations": [
+    "Satellite soil moisture is not root-zone moisture",
+    "Crop suitability requires local validation"
+  ]
+}
