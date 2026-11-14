@@ -1,3 +1,7 @@
-requests
-pandas
 numpy
+pandas
+earthaccess
+h5py
+rasterio
+requests
+OWSLib

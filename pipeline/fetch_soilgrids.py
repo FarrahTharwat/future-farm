@@ -1,31 +1,177 @@
-"""Query ISRIC SoilGrids for one point. Saves data/processed/soil_properties.csv
-Usage: python pipeline/fetch_soilgrids.py --lat 39.47 --lon -118.78
-NOTE: written from the SoilGrids REST docs; the API can be slow/rate-limited, so cache the result.
-"""
-import argparse, requests, pandas as pd
 
-URL = "https://rest.isric.org/soilgrids/v2.0/properties/query"
-PROPS = ["soc", "phh2o", "clay", "sand", "silt", "nitrogen"]
-DEPTHS = ["0-5cm", "5-15cm", "15-30cm"]
+from pathlib import Path
 
-def fetch(lat, lon):
-    r = requests.get(URL, params={"lat": lat, "lon": lon, "property": PROPS,
-                                  "depth": DEPTHS, "value": "mean"}, timeout=120)
-    r.raise_for_status()
-    rows = []
-    for layer in r.json()["properties"]["layers"]:
-        d = layer["unit_measure"].get("d_factor", 1) or 1
-        for dep in layer["depths"]:
-            v = dep["values"].get("mean")
-            rows.append({"property": layer["name"], "depth": dep["label"],
-                         "value": None if v is None else v / d,
-                         "unit": layer["unit_measure"].get("target_units", "")})
-    return pd.DataFrame(rows)
+import numpy as np
+import pandas as pd
+import rasterio
+from owslib.wcs import WebCoverageService
 
-if __name__ == "__main__":
-    ap = argparse.ArgumentParser()
-    ap.add_argument("--lat", type=float, required=True)
-    ap.add_argument("--lon", type=float, required=True)
-    a = ap.parse_args()
-    fetch(a.lat, a.lon).to_csv("data/processed/soil_properties.csv", index=False)
-    print("saved soil_properties.csv")
+# ==========================================
+# 1. Location
+# ==========================================
+
+LATITUDE = 39.461142
+LONGITUDE = -118.830528
+
+# ==========================================
+# 2. Project directories
+# ==========================================
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+
+RAW_DIR = PROJECT_ROOT / "data" / "raw" / "soilgrids"
+PROCESSED_DIR = PROJECT_ROOT / "data" / "processed"
+
+RAW_DIR.mkdir(parents=True, exist_ok=True)
+PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
+
+# ==========================================
+# 3. SoilGrids configuration
+# ==========================================
+
+PROPERTIES = [
+    "bdod",
+    "clay",
+    "sand",
+    "phh2o",
+    "soc",
+    "nitrogen"
+]
+
+DEPTHS = [
+    "0-5cm",
+    "5-15cm",
+    "15-30cm",
+    "30-60cm",
+    "60-100cm",
+    "100-200cm"
+]
+
+SCALE_FACTORS = {
+    "bdod": 100,
+    "clay": 10,
+    "sand": 10,
+    "phh2o": 10,
+    "soc": 10,
+    "nitrogen": 100
+}
+
+UNITS = {
+    "bdod": "kg/dm3",
+    "clay": "%",
+    "sand": "%",
+    "phh2o": "pH",
+    "soc": "g/kg",
+    "nitrogen": "g/kg"
+}
+
+BASE_URL = "https://maps.isric.org/mapserv?map=/map/{}.map"
+
+# Small bounding box around study location
+OFFSET = 0.005
+
+BBOX = (
+    LONGITUDE - OFFSET,
+    LATITUDE - OFFSET,
+    LONGITUDE + OFFSET,
+    LATITUDE + OFFSET
+)
+
+# ==========================================
+# 4. Download and extract
+# ==========================================
+
+results = []
+
+for prop in PROPERTIES:
+
+    print(f"\nProcessing property: {prop}")
+
+    url = BASE_URL.format(prop)
+
+    wcs = WebCoverageService(
+        url,
+        version="1.0.0"
+    )
+
+    for depth in DEPTHS:
+
+        layer_name = f"{prop}_{depth}_mean"
+
+        print(f"Downloading {layer_name}...")
+
+        try:
+            response = wcs.getCoverage(
+                identifier=layer_name,
+                crs="urn:ogc:def:crs:EPSG::4326",
+                bbox=BBOX,
+                resx=0.00225,
+                resy=0.00225,
+                format="GEOTIFF_INT16"
+            )
+
+            # Save original raster
+            raster_file = RAW_DIR / f"{layer_name}.tif"
+
+            with open(raster_file, "wb") as file:
+                file.write(response.read())
+
+            # Extract pixel at study coordinates
+            with rasterio.open(raster_file) as src:
+
+                raw_value = list(
+                    src.sample([(LONGITUDE, LATITUDE)])
+                )[0][0]
+
+                if src.nodata is not None and raw_value == src.nodata:
+                    raw_value = np.nan
+
+                if raw_value == -32768:
+                    raw_value = np.nan
+
+            # Convert to physical units
+            if pd.isna(raw_value):
+                value = np.nan
+            else:
+                value = raw_value / SCALE_FACTORS[prop]
+
+            results.append({
+                "property": prop,
+                "depth": depth,
+                "raw_value": raw_value,
+                "value": value,
+                "unit": UNITS[prop],
+                "latitude": LATITUDE,
+                "longitude": LONGITUDE
+            })
+
+            print(f"Extracted value: {value}")
+
+        except Exception as error:
+
+            print(f"Error processing {layer_name}: {error}")
+
+# ==========================================
+# 5. Save final dataset
+# ==========================================
+
+df = pd.DataFrame(results)
+
+output_file = PROCESSED_DIR / "soil_properties.csv"
+
+df.to_csv(output_file, index=False)
+
+print("\n===================================")
+print("SOILGRIDS PROCESSING COMPLETED")
+print("===================================")
+
+print("\nDataset:")
+print(df)
+
+print("\nDataset shape:", df.shape)
+
+print("\nMissing values:")
+print(df.isna().sum())
+
+print("\nSaved CSV:", output_file)
+print("Raw rasters folder:", RAW_DIR)
