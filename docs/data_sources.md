@@ -39,9 +39,9 @@
 
 ## MODIS vegetation index (optional)
 - Product: MOD13Q1 Version 061, 16-day NDVI composite.
-- Spatial resolution: 250 m; the script selects the farm point from the MODIS sinusoidal grid and retains only good pixel-reliability observations.
+- Spatial resolution: 250 m. NASA AppEEARS samples the pixel at the farm coordinate and returns a point time series instead of full global granules.
 - Product period: 2000 onward; the project's requested period is 2001-2025.
-- NDVI scale: raw integer values are multiplied by 0.0001; NDVI is unitless.
-- Files: source granules under `data/raw/modis/`; point time series in `data/processed/ndvi.csv`.
-- Limits: a 250 m satellite pixel is still not a field survey; cloud, snow, and other quality screening can leave gaps. The point-download script estimates transfer size and asks before downloading.
+- NDVI scale: unitless; the pipeline normalizes the source scale factor (0.0001) and keeps observations with pixel-reliability flag 0.
+- Files: the raw AppEEARS point response is saved under `data/raw/modis/`; the normalized time series is `data/processed/ndvi.csv`.
+- Limits: a 250 m satellite pixel is not a field survey; cloud, snow, and other quality screening can leave gaps. The default request is a one-month test; requests longer than 31 days require `--allow-long-range`.
 

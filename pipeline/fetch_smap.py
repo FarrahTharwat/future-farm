@@ -27,8 +27,7 @@ QUALITY_FILL_VALUE = 65534
 RECOMMENDED_FLAGS = {0, 8}
 ROOT = Path(__file__).resolve().parents[1]
 RAW_DIR = ROOT / "data" / "raw" / "smap"
-OUTPUT_CSV = ROOT / "data" / "processed" / "soil_moisture.csv"
-
+OUTPUT_CSV = ROOT / "data" / "processed" / "smap_soil_moisture.csv"
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
