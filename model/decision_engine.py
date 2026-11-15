@@ -16,6 +16,7 @@ from climate_score import load_daily, rotation_climate
 from scoring import score_rotation
 from scenario_analysis import weight_sweep
 from explanations import explain
+from field_timeline import field_timeline
 
 ROTATIONS = ["current", "alt_a", "alt_b"]
 CRITERIA = ["water", "climate", "soil_health"]
@@ -100,6 +101,7 @@ def build():
                         "heat_days_per_year": c["heat_days_per_year"], "bare_months_per_year": s["bare_months_per_year"]},
             "feasibility_warnings": warnings,
             "explanations": explanations,
+            "field_timeline": field_timeline(rid, rots, cal),
             "uncertainty": {"level": "high", "reasons": reasons}})
 
     # How much does the result depend on DS2's heat limits (all placeholders or estimates)?  Shift every limit by -2/0/+2 C.
