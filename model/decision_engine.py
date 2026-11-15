@@ -39,13 +39,49 @@ def load_climate():
             source = "TEMPORARY"
     return clim, source
 
+def warm_et0(clim, temp_c):
+    """ET0 under warming. Hargreaves shape: ET0 scales with (mean temp + 17.8), so +dT raises a month's ET0 by
+    dT / (T_mean + 17.8). Approximation [UNVERIFIED]: ignores changes in temperature range, humidity, wind."""
+    c2 = clim.copy()
+    c2["et0_mm_mean"] = c2["et0_mm_mean"] * (1 + temp_c / (c2["temp_c_mean"] + 17.8))
+    return c2
+
 def what_if(rid, rain_pct, temp_c, clim, daily, rots, db, cal):
     c2 = clim.copy()
     c2["rain_mm_mean"] = c2["rain_mm_mean"] * (1 + rain_pct / 100)
+    c2 = warm_et0(c2, temp_c)
     water = rotation_water(rid, rots, c2, db, cal)["water_score"]
     climate = rotation_climate(rid, rots, daily, db, cal, temp_shift_c=temp_c)["climate_score"]
     return water, climate
 
+
+ET0_FACTORS = [0.9, 1.0, 1.1]    # DS2's water min / central / max are -10% / 0 / +10% of the central value
+HEAT_SHIFTS = [-2, 0, 2]         # heat limits are estimates: test +-2 C
+
+def uncertainty_ranges(rots, clim, daily, db, cal, all_scores):
+    """Rerun overall scores across DS2's water range and the heat-limit range. Reports whether the ranking holds."""
+    cases = []
+    for f in ET0_FACTORS:
+        c2 = clim.copy()
+        c2["et0_mm_mean"] = c2["et0_mm_mean"] * f
+        for dt in HEAT_SHIFTS:
+            ov = {}
+            for rid in ROTATIONS:
+                wsc = rotation_water(rid, rots, c2, db, cal)["water_score"]
+                csc = rotation_climate(rid, rots, daily, db, cal, threshold_shift_c=dt)["climate_score"]
+                ov[rid] = score_rotation({"water": wsc, "climate": csc,
+                                          "soil_health": all_scores[rid]["soil_health"]}, WEIGHTS)["overall"]
+            cases.append({"et0_factor": f, "heat_limit_shift_c": dt, "overall": ov,
+                          "ranking": sorted(ov, key=lambda r: -ov[r])})
+    first = {rid: sum(c["ranking"][0] == rid for c in cases) for rid in ROTATIONS}
+    return {
+        "note": "Water range = DS2's -10%/+10% around the central value; heat limits shifted +-2 C; soil score held constant",
+        "overall_range": {rid: {"min": min(c["overall"][rid] for c in cases),
+                                "max": max(c["overall"][rid] for c in cases)} for rid in ROTATIONS},
+        "cases_ranked_first": first,
+        "cases_total": len(cases),
+        "ranking_ever_changes": len({tuple(c["ranking"]) for c in cases}) > 1,
+        "cases": cases}
 def build():
     db, cal = load_crops()
     rots = load_rotations()
@@ -53,7 +89,7 @@ def build():
     temp_et0 = et0_source == "TEMPORARY"
     daily = load_daily()
     names = rots.drop_duplicates("rotation_id").set_index("rotation_id")["rotation_name"].to_dict()
-
+        
     base, stress, parts = {}, {}, {}
     for rid in ROTATIONS:
         w = rotation_water(rid, rots, clim, db, cal)
@@ -113,7 +149,7 @@ def build():
             ov[rid] = score_rotation({**all_scores[rid], "climate": cl}, WEIGHTS)["overall"]
         order = sorted(ov, key=lambda r: -ov[r])
         sensitivity[f"heat_limit_shift_{dt:+d}C"] = {"overall": ov, "ranking": order}
-
+    ranges = uncertainty_ranges(rots, clim, daily, db, cal, all_scores)
     variants = []
     for rp in RAIN_STEPS:
         for tc in TEMP_STEPS:
@@ -132,12 +168,14 @@ def build():
         "rotations": rotation_results,
         "ranking_stability": weight_sweep(all_scores, CRITERIA),
         "sensitivity": sensitivity,
+        "uncertainty_ranges": ranges,       
         "et0_source": et0_source,
         "scenario_variants": variants,
-        "scenario_note": "In the grid, water and climate are recalculated for each rain and warming setting; soil health is held constant; overall uses the same weights as the headline score. Warming changes heat days but not ET0 yet.",
+        "scenario_note": "In the grid, water and climate are recalculated for each rain and warming setting; soil health is held constant; overall uses the same weights as the headline score. Warming raises ET0 using an approximate Hargreaves-style scaling.",
         "limitations": ["Satellite soil moisture is not root-zone moisture", "Crop suitability requires local validation",
                         "Soil-health score is a checklist of potential benefits, not a measurement",
-                        "Frost risk and soil salinity are not modelled"]}
+                        "Frost risk and soil salinity are not modelled",
+                        "Warming raises water demand by an approximate temperature scaling, not a full evapotranspiration model",]}
 
 if __name__ == "__main__":
     out = build()
@@ -151,3 +189,7 @@ if __name__ == "__main__":
     print("share of priority settings each rotation wins:", out["ranking_stability"])
     for k, v in out["sensitivity"].items():
         print(k, v["overall"], "->", v["ranking"])
+        
+    u = out["uncertainty_ranges"]
+    print("overall range:", u["overall_range"])
+    print("ranked first in", u["cases_ranked_first"], "of", u["cases_total"], "cases | ranking ever changes:", u["ranking_ever_changes"])
