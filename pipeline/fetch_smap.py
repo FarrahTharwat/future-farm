@@ -2,8 +2,8 @@
 
 """Fetch SMAP SPL3SMP_E v006 soil moisture for a date range.
 
-Downloads monthly batches, skips granules already on disk, estimates remaining
-transfer size, and asks before downloading. Default dates match weather.csv.
+Requests an NSIDC Harmony spatial subset around Lattin Farms instead of downloading
+full global granules. Start with a short 2025 test period before requesting years.
 """
 from __future__ import annotations
 
@@ -32,9 +32,11 @@ OUTPUT_CSV = ROOT / "data" / "processed" / "soil_moisture.csv"
 
 def parse_args() -> argparse.Namespace:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--start", default="2016-01-01", help="Start date, YYYY-MM-DD")
-    parser.add_argument("--end", default="2025-12-31", help="End date inclusive, YYYY-MM-DD")
-    parser.add_argument("--estimate-only", action="store_true", help="Search and estimate size without downloading")
+    parser.add_argument("--start", default="2025-01-01", help="Start date, YYYY-MM-DD (default: test week)")
+    parser.add_argument("--end", default="2025-01-07", help="End date inclusive, YYYY-MM-DD (default: test week)")
+    parser.add_argument("--estimate-only", action="store_true", help="Count granules without downloading")
+    parser.add_argument("--allow-long-range", action="store_true", help="Allow requests longer than 31 days")
+    parser.add_argument("--buffer-degrees", type=float, default=0.25, help="Half-width of farm bounding box in degrees (default: 0.25)")
     return parser.parse_args()
 
 
@@ -147,54 +149,101 @@ def main() -> int:
     start, end = date.fromisoformat(args.start), date.fromisoformat(args.end)
     if end < start:
         raise ValueError("--end must be on or after --start")
+    if args.buffer_degrees <= 0 or args.buffer_degrees > 2:
+        raise ValueError("--buffer-degrees must be greater than 0 and at most 2")
+    if (end - start).days > 30 and not args.allow_long_range:
+        raise ValueError("Requests over 31 days require --allow-long-range; test a short period first")
 
     import earthaccess
+    from harmony import BBox, CapabilitiesRequest, Client, Collection, Request
 
     RAW_DIR.mkdir(parents=True, exist_ok=True)
     OUTPUT_CSV.parent.mkdir(parents=True, exist_ok=True)
-    searches = []
-    total_mb = 0.0
-    for first, last in month_ranges(start, end):
-        print(f"Searching {PRODUCT_SHORT_NAME} v{PRODUCT_VERSION}: {first} to {last}...")
-        found = earthaccess.search_data(
-            short_name=PRODUCT_SHORT_NAME, version=PRODUCT_VERSION,
-            temporal=(first.isoformat(), f"{last.isoformat()}T23:59:59"),
-        )
-        missing = []
-        for granule in found:
-            filename = granule_filename(granule)
-            if filename is None or not (RAW_DIR / filename).exists():
-                missing.append(granule)
-                total_mb += float(getattr(granule, "size", 0) or 0)
-        searches.append((first, last, missing))
+    print(f"Searching {PRODUCT_SHORT_NAME} v{PRODUCT_VERSION}: {start} to {end}...")
+    granules = earthaccess.search_data(
+        short_name=PRODUCT_SHORT_NAME, version=PRODUCT_VERSION,
+        temporal=(start.isoformat(), f"{end.isoformat()}T23:59:59"),
+    )
+    if not granules:
+        raise RuntimeError("No SMAP granules found for the requested dates")
 
-    print(f"Estimated remaining transfer: {total_mb / 1024:.1f} GB. Existing granules are skipped.")
+    by_month = {}
+    for granule in granules:
+        name = granule_filename(granule)
+        if name:
+            day = granule_date(Path(name))
+            if start <= day <= end:
+                by_month.setdefault((day.year, day.month), {})[name] = granule
+    existing_dates = set()
+    subset_files = list(RAW_DIR.glob("*subsetted*.nc4")) + list(RAW_DIR.glob("*subsetted*.h5")) + list(RAW_DIR.glob("*subsetted*.hdf5"))
+    for path in subset_files:
+        try:
+            existing_dates.add(granule_date(path))
+        except ValueError:
+            pass
+    pending_by_month = {}
+    for ym, items in by_month.items():
+        for name, granule in items.items():
+            if granule_date(Path(name)) not in existing_dates:
+                pending_by_month.setdefault(ym, []).append(name)
+
+    count = sum(map(len, pending_by_month.values()))
+    print(f"Granules in date range: {sum(map(len, by_month.values()))}; subset files already present: {len(existing_dates)}; to request: {count}.")
+    print(f"Requested area: {args.buffer_degrees:g} degree around the farm ({FARM_LATITUDE}, {FARM_LONGITUDE}).")
     if args.estimate_only:
+        print("This is a subset request; full-granule transfer sizes do not apply.")
         return 0
-    if total_mb:
-        if input("Type DOWNLOAD to start: ").strip() != "DOWNLOAD":
-            print("Cancelled; no new granules downloaded.")
+
+    if count:
+        if input("Type DOWNLOAD to request spatially subsetted granules: ").strip() != "DOWNLOAD":
+            print("Cancelled; nothing downloaded.")
             return 0
         earthaccess.login()
+        # earthaccess currently returns a token response dictionary; Harmony expects
+        # the bearer-token string itself.
+        token_data = earthaccess.get_edl_token()
+        edl_token = token_data.get("access_token") if isinstance(token_data, dict) else token_data
+        if not isinstance(edl_token, str) or not edl_token:
+            raise RuntimeError("earthaccess did not provide a valid Earthdata access token")
+        client = Client(token=edl_token)
+        capabilities = client.submit(CapabilitiesRequest(short_name=PRODUCT_SHORT_NAME))
+        collection_id = capabilities["conceptId"]
+        west = FARM_LONGITUDE - args.buffer_degrees
+        east = FARM_LONGITUDE + args.buffer_degrees
+        south = FARM_LATITUDE - args.buffer_degrees
+        north = FARM_LATITUDE + args.buffer_degrees
+        for (year, month), names in sorted(pending_by_month.items()):
+            print(f"Requesting {len(names)} cropped granules for {year}-{month:02d}...")
+            request = Request(
+                collection=Collection(id=collection_id),
+                granule_name=names,
+                spatial=BBox(west, south, east, north),
+            )
+            if not request.is_valid():
+                raise RuntimeError(f"Harmony rejected the SMAP subset request for {year}-{month:02d}")
+            job_id = client.submit(request)
+            client.wait_for_processing(job_id, show_progress=True)
+            futures = client.download_all(job_id, directory=str(RAW_DIR), overwrite=False)
+            downloaded = [future.result() for future in futures]
+            print(f"Saved {len(downloaded)} spatial subsets in {RAW_DIR}.")
 
-    for first, last, missing in searches:
-        if missing:
-            print(f"Downloading {len(missing)} granules for {first:%Y-%m}...")
-            earthaccess.download(missing, local_path=str(RAW_DIR))
-
+    paths = list(RAW_DIR.glob("*subsetted*.nc4")) + list(RAW_DIR.glob("*subsetted*.h5")) + list(RAW_DIR.glob("*subsetted*.hdf5"))
     files = []
-    for path in sorted(RAW_DIR.glob("*.h5")) + sorted(RAW_DIR.glob("*.hdf5")):
-        day = granule_date(path)
+    for path in sorted(paths):
+        try:
+            day = granule_date(path)
+        except ValueError:
+            continue
         if start <= day <= end:
             files.append(path)
     if not files:
-        raise RuntimeError(f"No HDF5 granules found in {RAW_DIR} for the requested dates")
+        raise RuntimeError(f"No Harmony subset files found in {RAW_DIR} for these dates")
 
     rows = [extract_granule(path) for path in files]
     frame = pd.DataFrame(rows).drop_duplicates(subset=["date"], keep="last").sort_values("date")
     frame.to_csv(OUTPUT_CSV, index=False, na_rep="")
-    print(f"Processed {len(frame)} daily granules into {OUTPUT_CSV}")
-    print(f"Raw files are in {RAW_DIR}; only recommended quality flags 0 and 8 are used.")
+    print(f"Processed {len(frame)} subset granules into {OUTPUT_CSV}")
+    print(f"Cropped raw files are in {RAW_DIR}; only recommended quality flags 0 and 8 are used.")
     return 0
 
 
