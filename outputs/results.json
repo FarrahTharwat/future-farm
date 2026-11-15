@@ -22,20 +22,21 @@
       ],
       "cycle_years": 5,
       "rank": 1,
+      "tied_with": [],
       "scores": {
-        "water": 33.8,
-        "climate": 94.3,
+        "water": 36.6,
+        "climate": 94.9,
         "soil_health": 65.8,
-        "overall": 60.1
+        "overall": 61.4
       },
       "contributions": {
-        "water": 13.52,
-        "climate": 23.57,
+        "water": 14.64,
+        "climate": 23.73,
         "soil_health": 23.03
       },
       "stress_test": {
-        "overall_under_stress": 57.4,
-        "retention_pct": 95.5,
+        "overall_under_stress": 58.8,
+        "retention_pct": 95.8,
         "rank_baseline": 1,
         "rank_under_stress": 1,
         "scenario": {
@@ -45,20 +46,20 @@
         "note": "Shown beside the ranking; not part of the overall score"
       },
       "details": {
-        "yearly_irrigation_mm": 808,
-        "yearly_rain_mm": 86,
+        "yearly_irrigation_mm": 774,
+        "yearly_rain_mm": 84,
         "water_deficit_mm": 0,
-        "heat_days_per_year": 48.7,
+        "heat_days_per_year": 43.7,
         "bare_months_per_year": 5.8
       },
       "feasibility_warnings": [],
       "explanations": [
         "Current rotation (baseline: alfalfa stand): its biggest contribution to the overall score comes from climate suitability.",
-        "Its weakest area is water suitability (score 33.8), which needs local review.",
-        "Needs about 808 mm of irrigation per year; usable rain covers about 86 mm.",
-        "About 48.7 heat-stress days per year across its growing seasons.",
+        "Its weakest area is water suitability (score 36.6), which needs local review.",
+        "Needs about 774 mm of irrigation per year; usable rain covers about 84 mm.",
+        "About 43.7 heat-stress days per year across its growing seasons.",
         "Roughly 5.8 months per year without living green cover.",
-        "Stress test (-20% rain, +1.5 C): its overall score is 57.4 (rank 1, baseline rank 1)."
+        "Stress test (-20% rain, +1.5 C): its overall score is 58.8 (rank 1, baseline rank 1)."
       ],
       "field_timeline": [
         {
@@ -106,7 +107,7 @@
         {
           "cycle_year": 1,
           "month": 8,
-          "crop": "winter_wheat",
+          "crop": "alfalfa",
           "green_cover": true
         },
         {
@@ -422,7 +423,7 @@
           "green_cover": false
         }
       ],
-      "heat_degree_days_per_year": 126.2,
+      "heat_degree_days_per_year": 110.0,
       "uncertainty": {
         "level": "high",
         "reasons": [
@@ -441,23 +442,26 @@
         "winter_wheat"
       ],
       "cycle_years": 3,
-      "rank": 3,
+      "rank": 2,
+      "tied_with": [
+        "alt_b"
+      ],
       "scores": {
-        "water": 44.9,
-        "climate": 77.2,
-        "soil_health": 52.9,
-        "overall": 55.8
+        "water": 49.5,
+        "climate": 77.4,
+        "soil_health": 52.1,
+        "overall": 57.4
       },
       "contributions": {
-        "water": 17.96,
-        "climate": 19.3,
-        "soil_health": 18.51
+        "water": 19.8,
+        "climate": 19.35,
+        "soil_health": 18.23
       },
       "stress_test": {
-        "overall_under_stress": 52.6,
-        "retention_pct": 94.3,
-        "rank_baseline": 3,
-        "rank_under_stress": 3,
+        "overall_under_stress": 54.4,
+        "retention_pct": 94.8,
+        "rank_baseline": 2,
+        "rank_under_stress": 2,
         "scenario": {
           "rain_pct": -20,
           "temp_c": 1.5
@@ -465,20 +469,21 @@
         "note": "Shown beside the ranking; not part of the overall score"
       },
       "details": {
-        "yearly_irrigation_mm": 673,
-        "yearly_rain_mm": 82,
+        "yearly_irrigation_mm": 616,
+        "yearly_rain_mm": 80,
         "water_deficit_mm": 0,
-        "heat_days_per_year": 82.5,
-        "bare_months_per_year": 6.0
+        "heat_days_per_year": 74.1,
+        "bare_months_per_year": 6.3
       },
       "feasibility_warnings": [],
       "explanations": [
-        "Alternative A: Water-conserving small-grain and pea rotation: its biggest contribution to the overall score comes from climate suitability.",
-        "Its weakest area is water suitability (score 44.9), which needs local review.",
-        "Needs about 673 mm of irrigation per year; usable rain covers about 82 mm.",
-        "About 82.5 heat-stress days per year across its growing seasons.",
-        "Roughly 6.0 months per year without living green cover.",
-        "Stress test (-20% rain, +1.5 C): its overall score is 52.6 (rank 3, baseline rank 3)."
+        "Alternative A: Water-conserving small-grain and pea rotation: its biggest contribution to the overall score comes from water suitability.",
+        "Its weakest area is water suitability (score 49.5), which needs local review.",
+        "Needs about 616 mm of irrigation per year; usable rain covers about 80 mm.",
+        "About 74.1 heat-stress days per year across its growing seasons.",
+        "Roughly 6.3 months per year without living green cover.",
+        "Stress test (-20% rain, +1.5 C): its overall score is 54.4 (rank 2, baseline rank 2).",
+        "Its overall score is within 1 point of Alternative B: Soil-health rotation with legume and winter cover, so the order between them is effectively a tie."
       ],
       "field_timeline": [
         {
@@ -670,8 +675,8 @@
         {
           "cycle_year": 3,
           "month": 8,
-          "crop": "winter_wheat",
-          "green_cover": true
+          "crop": null,
+          "green_cover": false
         },
         {
           "cycle_year": 3,
@@ -698,7 +703,7 @@
           "green_cover": false
         }
       ],
-      "heat_degree_days_per_year": 423.8,
+      "heat_degree_days_per_year": 396.6,
       "uncertainty": {
         "level": "high",
         "reasons": [
@@ -718,7 +723,10 @@
         "hairy_vetch"
       ],
       "cycle_years": 2,
-      "rank": 2,
+      "rank": 3,
+      "tied_with": [
+        "alt_a"
+      ],
       "scores": {
         "water": 33.2,
         "climate": 86.8,
@@ -733,8 +741,8 @@
       "stress_test": {
         "overall_under_stress": 53.9,
         "retention_pct": 93.9,
-        "rank_baseline": 2,
-        "rank_under_stress": 2,
+        "rank_baseline": 3,
+        "rank_under_stress": 3,
         "scenario": {
           "rain_pct": -20,
           "temp_c": 1.5
@@ -755,7 +763,8 @@
         "Needs about 814 mm of irrigation per year; usable rain covers about 168 mm.",
         "About 71.7 heat-stress days per year across its growing seasons.",
         "Roughly 4.0 months per year without living green cover.",
-        "Stress test (-20% rain, +1.5 C): its overall score is 53.9 (rank 2, baseline rank 2)."
+        "Stress test (-20% rain, +1.5 C): its overall score is 53.9 (rank 3, baseline rank 3).",
+        "Its overall score is within 1 point of Alternative A: Water-conserving small-grain and pea rotation, so the order between them is effectively a tie."
       ],
       "field_timeline": [
         {
@@ -915,15 +924,15 @@
     }
   ],
   "ranking_stability": {
-    "current": 0.79,
-    "alt_a": 0.21,
+    "current": 0.77,
+    "alt_a": 0.23,
     "alt_b": 0.0
   },
   "sensitivity": {
     "heat_limit_shift_-2C": {
       "overall": {
-        "current": 58.8,
-        "alt_a": 53.6,
+        "current": 60.1,
+        "alt_a": 55.4,
         "alt_b": 56.0
       },
       "ranking": [
@@ -934,59 +943,77 @@
     },
     "heat_limit_shift_+0C": {
       "overall": {
-        "current": 60.1,
-        "alt_a": 55.8,
+        "current": 61.4,
+        "alt_a": 57.4,
         "alt_b": 57.4
       },
       "ranking": [
         "current",
-        "alt_b",
-        "alt_a"
+        "alt_a",
+        "alt_b"
       ]
     },
     "heat_limit_shift_+2C": {
       "overall": {
-        "current": 61.0,
-        "alt_a": 57.8,
+        "current": 62.2,
+        "alt_a": 59.3,
         "alt_b": 58.6
       },
       "ranking": [
         "current",
-        "alt_b",
-        "alt_a"
+        "alt_a",
+        "alt_b"
       ]
     }
   },
   "uncertainty_ranges": {
-    "note": "Water range = DS2's -10%/+10% around the central value; heat limits shifted +-2 C; soil score held constant",
+    "note": "Water range = DS2's -10%/+10% around the central value; heat limits shifted +-2 C; heat severity cap 5/10/15 C; soil score held constant",
     "overall_range": {
       "current": {
-        "min": 55.8,
-        "max": 63.9
+        "min": 55.3,
+        "max": 65.2
       },
       "alt_a": {
-        "min": 51.1,
-        "max": 60.2
+        "min": 50.5,
+        "max": 62.8
       },
       "alt_b": {
-        "min": 52.8,
-        "max": 61.8
+        "min": 51.0,
+        "max": 62.5
       }
     },
     "cases_ranked_first": {
-      "current": 9,
+      "current": 27,
       "alt_a": 0,
       "alt_b": 0
     },
-    "cases_total": 9,
-    "ranking_ever_changes": false,
+    "cases_total": 27,
+    "leader_ever_changes": false,
+    "ranking_ever_changes": true,
+    "smallest_lead_points": 1.2,
     "cases": [
       {
         "et0_factor": 0.9,
         "heat_limit_shift_c": -2,
+        "severity_cap_c": 5.0,
         "overall": {
-          "current": 61.7,
-          "alt_a": 56.1,
+          "current": 60.9,
+          "alt_a": 55.1,
+          "alt_b": 57.4
+        },
+        "ranking": [
+          "current",
+          "alt_b",
+          "alt_a"
+        ]
+      },
+      {
+        "et0_factor": 0.9,
+        "heat_limit_shift_c": -2,
+        "severity_cap_c": 10.0,
+        "overall": {
+          "current": 62.9,
+          "alt_a": 57.6,
           "alt_b": 59.2
         },
         "ranking": [
@@ -997,10 +1024,11 @@
       },
       {
         "et0_factor": 0.9,
-        "heat_limit_shift_c": 0,
+        "heat_limit_shift_c": -2,
+        "severity_cap_c": 15.0,
         "overall": {
-          "current": 63.0,
-          "alt_a": 58.2,
+          "current": 63.7,
+          "alt_a": 60.0,
           "alt_b": 60.6
         },
         "ranking": [
@@ -1011,11 +1039,102 @@
       },
       {
         "et0_factor": 0.9,
-        "heat_limit_shift_c": 2,
+        "heat_limit_shift_c": 0,
+        "severity_cap_c": 5.0,
         "overall": {
-          "current": 63.9,
-          "alt_a": 60.2,
+          "current": 63.0,
+          "alt_a": 56.8,
+          "alt_b": 59.1
+        },
+        "ranking": [
+          "current",
+          "alt_b",
+          "alt_a"
+        ]
+      },
+      {
+        "et0_factor": 0.9,
+        "heat_limit_shift_c": 0,
+        "severity_cap_c": 10.0,
+        "overall": {
+          "current": 64.2,
+          "alt_a": 59.7,
+          "alt_b": 60.6
+        },
+        "ranking": [
+          "current",
+          "alt_b",
+          "alt_a"
+        ]
+      },
+      {
+        "et0_factor": 0.9,
+        "heat_limit_shift_c": 0,
+        "severity_cap_c": 15.0,
+        "overall": {
+          "current": 64.6,
+          "alt_a": 61.5,
+          "alt_b": 61.7
+        },
+        "ranking": [
+          "current",
+          "alt_b",
+          "alt_a"
+        ]
+      },
+      {
+        "et0_factor": 0.9,
+        "heat_limit_shift_c": 2,
+        "severity_cap_c": 5.0,
+        "overall": {
+          "current": 64.5,
+          "alt_a": 59.0,
+          "alt_b": 60.5
+        },
+        "ranking": [
+          "current",
+          "alt_b",
+          "alt_a"
+        ]
+      },
+      {
+        "et0_factor": 0.9,
+        "heat_limit_shift_c": 2,
+        "severity_cap_c": 10.0,
+        "overall": {
+          "current": 65.0,
+          "alt_a": 61.6,
           "alt_b": 61.8
+        },
+        "ranking": [
+          "current",
+          "alt_b",
+          "alt_a"
+        ]
+      },
+      {
+        "et0_factor": 0.9,
+        "heat_limit_shift_c": 2,
+        "severity_cap_c": 15.0,
+        "overall": {
+          "current": 65.2,
+          "alt_a": 62.8,
+          "alt_b": 62.5
+        },
+        "ranking": [
+          "current",
+          "alt_a",
+          "alt_b"
+        ]
+      },
+      {
+        "et0_factor": 1.0,
+        "heat_limit_shift_c": -2,
+        "severity_cap_c": 5.0,
+        "overall": {
+          "current": 58.1,
+          "alt_a": 52.8,
+          "alt_b": 54.2
         },
         "ranking": [
           "current",
@@ -1026,9 +1145,10 @@
       {
         "et0_factor": 1.0,
         "heat_limit_shift_c": -2,
+        "severity_cap_c": 10.0,
         "overall": {
-          "current": 58.8,
-          "alt_a": 53.6,
+          "current": 60.1,
+          "alt_a": 55.4,
           "alt_b": 56.0
         },
         "ranking": [
@@ -1039,11 +1159,72 @@
       },
       {
         "et0_factor": 1.0,
-        "heat_limit_shift_c": 0,
+        "heat_limit_shift_c": -2,
+        "severity_cap_c": 15.0,
         "overall": {
-          "current": 60.1,
-          "alt_a": 55.8,
+          "current": 60.9,
+          "alt_a": 57.7,
           "alt_b": 57.4
+        },
+        "ranking": [
+          "current",
+          "alt_a",
+          "alt_b"
+        ]
+      },
+      {
+        "et0_factor": 1.0,
+        "heat_limit_shift_c": 0,
+        "severity_cap_c": 5.0,
+        "overall": {
+          "current": 60.2,
+          "alt_a": 54.5,
+          "alt_b": 55.9
+        },
+        "ranking": [
+          "current",
+          "alt_b",
+          "alt_a"
+        ]
+      },
+      {
+        "et0_factor": 1.0,
+        "heat_limit_shift_c": 0,
+        "severity_cap_c": 10.0,
+        "overall": {
+          "current": 61.4,
+          "alt_a": 57.4,
+          "alt_b": 57.4
+        },
+        "ranking": [
+          "current",
+          "alt_a",
+          "alt_b"
+        ]
+      },
+      {
+        "et0_factor": 1.0,
+        "heat_limit_shift_c": 0,
+        "severity_cap_c": 15.0,
+        "overall": {
+          "current": 61.8,
+          "alt_a": 59.2,
+          "alt_b": 58.5
+        },
+        "ranking": [
+          "current",
+          "alt_a",
+          "alt_b"
+        ]
+      },
+      {
+        "et0_factor": 1.0,
+        "heat_limit_shift_c": 2,
+        "severity_cap_c": 5.0,
+        "overall": {
+          "current": 61.7,
+          "alt_a": 56.8,
+          "alt_b": 57.2
         },
         "ranking": [
           "current",
@@ -1054,10 +1235,41 @@
       {
         "et0_factor": 1.0,
         "heat_limit_shift_c": 2,
+        "severity_cap_c": 10.0,
         "overall": {
-          "current": 61.0,
-          "alt_a": 57.8,
+          "current": 62.2,
+          "alt_a": 59.3,
           "alt_b": 58.6
+        },
+        "ranking": [
+          "current",
+          "alt_a",
+          "alt_b"
+        ]
+      },
+      {
+        "et0_factor": 1.0,
+        "heat_limit_shift_c": 2,
+        "severity_cap_c": 15.0,
+        "overall": {
+          "current": 62.4,
+          "alt_a": 60.5,
+          "alt_b": 59.3
+        },
+        "ranking": [
+          "current",
+          "alt_a",
+          "alt_b"
+        ]
+      },
+      {
+        "et0_factor": 1.1,
+        "heat_limit_shift_c": -2,
+        "severity_cap_c": 5.0,
+        "overall": {
+          "current": 55.3,
+          "alt_a": 50.5,
+          "alt_b": 51.0
         },
         "ranking": [
           "current",
@@ -1068,10 +1280,41 @@
       {
         "et0_factor": 1.1,
         "heat_limit_shift_c": -2,
+        "severity_cap_c": 10.0,
         "overall": {
-          "current": 55.8,
-          "alt_a": 51.1,
+          "current": 57.3,
+          "alt_a": 53.1,
           "alt_b": 52.8
+        },
+        "ranking": [
+          "current",
+          "alt_a",
+          "alt_b"
+        ]
+      },
+      {
+        "et0_factor": 1.1,
+        "heat_limit_shift_c": -2,
+        "severity_cap_c": 15.0,
+        "overall": {
+          "current": 58.1,
+          "alt_a": 55.4,
+          "alt_b": 54.2
+        },
+        "ranking": [
+          "current",
+          "alt_a",
+          "alt_b"
+        ]
+      },
+      {
+        "et0_factor": 1.1,
+        "heat_limit_shift_c": 0,
+        "severity_cap_c": 5.0,
+        "overall": {
+          "current": 57.4,
+          "alt_a": 52.2,
+          "alt_b": 52.7
         },
         "ranking": [
           "current",
@@ -1082,29 +1325,76 @@
       {
         "et0_factor": 1.1,
         "heat_limit_shift_c": 0,
+        "severity_cap_c": 10.0,
         "overall": {
-          "current": 57.2,
-          "alt_a": 53.3,
+          "current": 58.6,
+          "alt_a": 55.1,
           "alt_b": 54.2
         },
         "ranking": [
           "current",
-          "alt_b",
-          "alt_a"
+          "alt_a",
+          "alt_b"
+        ]
+      },
+      {
+        "et0_factor": 1.1,
+        "heat_limit_shift_c": 0,
+        "severity_cap_c": 15.0,
+        "overall": {
+          "current": 59.0,
+          "alt_a": 56.9,
+          "alt_b": 55.3
+        },
+        "ranking": [
+          "current",
+          "alt_a",
+          "alt_b"
         ]
       },
       {
         "et0_factor": 1.1,
         "heat_limit_shift_c": 2,
+        "severity_cap_c": 5.0,
         "overall": {
-          "current": 58.1,
-          "alt_a": 55.3,
+          "current": 58.9,
+          "alt_a": 54.5,
+          "alt_b": 54.0
+        },
+        "ranking": [
+          "current",
+          "alt_a",
+          "alt_b"
+        ]
+      },
+      {
+        "et0_factor": 1.1,
+        "heat_limit_shift_c": 2,
+        "severity_cap_c": 10.0,
+        "overall": {
+          "current": 59.4,
+          "alt_a": 57.0,
           "alt_b": 55.4
         },
         "ranking": [
           "current",
-          "alt_b",
-          "alt_a"
+          "alt_a",
+          "alt_b"
+        ]
+      },
+      {
+        "et0_factor": 1.1,
+        "heat_limit_shift_c": 2,
+        "severity_cap_c": 15.0,
+        "overall": {
+          "current": 59.5,
+          "alt_a": 58.3,
+          "alt_b": 56.1
+        },
+        "ranking": [
+          "current",
+          "alt_a",
+          "alt_b"
         ]
       }
     ]
@@ -1116,21 +1406,27 @@
       "leader_at_100_pct": "alt_a",
       "flip_points": [
         {
-          "at_weight_pct": 57.5,
+          "at_weight_pct": 54.5,
           "from": "current",
           "to": "alt_a"
         }
       ],
       "top_never_changes": false,
-      "sentence": "With water weighted 40.0%, Current rotation (baseline: alfalfa stand) ranks first. The top rotation changes from Current rotation (baseline: alfalfa stand) to Alternative A: Water-conserving small-grain and pea rotation at about 57.5% water."
+      "sentence": "With water weighted 40.0%, Current rotation (baseline: alfalfa stand) ranks first. As the weight on water rises, the top rotation changes from Current rotation (baseline: alfalfa stand) to Alternative A: Water-conserving small-grain and pea rotation at about 54.5%."
     },
     "climate": {
       "current_weight_pct": 25.0,
-      "leader_at_0_pct": "current",
+      "leader_at_0_pct": "alt_a",
       "leader_at_100_pct": "current",
-      "flip_points": [],
-      "top_never_changes": true,
-      "sentence": "Current rotation (baseline: alfalfa stand) ranks first at every climate weight from 0% to 100%."
+      "flip_points": [
+        {
+          "at_weight_pct": 3.0,
+          "from": "alt_a",
+          "to": "current"
+        }
+      ],
+      "top_never_changes": false,
+      "sentence": "With climate weighted 25.0%, Current rotation (baseline: alfalfa stand) ranks first. As the weight on climate rises, the top rotation changes from Alternative A: Water-conserving small-grain and pea rotation to Current rotation (baseline: alfalfa stand) at about 3.0%."
     },
     "soil_health": {
       "current_weight_pct": 35.0,
@@ -1138,13 +1434,13 @@
       "leader_at_100_pct": "current",
       "flip_points": [
         {
-          "at_weight_pct": 2.0,
+          "at_weight_pct": 8.0,
           "from": "alt_a",
           "to": "current"
         }
       ],
       "top_never_changes": false,
-      "sentence": "With soil health weighted 35.0%, Current rotation (baseline: alfalfa stand) ranks first. The top rotation changes from Alternative A: Water-conserving small-grain and pea rotation to Current rotation (baseline: alfalfa stand) at about 2.0% soil health."
+      "sentence": "With soil health weighted 35.0%, Current rotation (baseline: alfalfa stand) ranks first. As the weight on soil health rises, the top rotation changes from Alternative A: Water-conserving small-grain and pea rotation to Current rotation (baseline: alfalfa stand) at about 8.0%."
     }
   },
   "et0_source": "USBR AgriMet Fallon station (2001-2010), converted to grass reference",
@@ -1154,14 +1450,14 @@
       "temperature_change_c": 0,
       "rotation_scores": {
         "current": {
-          "water": 32.4,
-          "climate": 94.3,
-          "overall": 59.6
+          "water": 35.2,
+          "climate": 94.9,
+          "overall": 60.8
         },
         "alt_a": {
-          "water": 43.6,
-          "climate": 77.2,
-          "overall": 55.2
+          "water": 48.2,
+          "climate": 77.4,
+          "overall": 56.9
         },
         "alt_b": {
           "water": 30.6,
@@ -1175,14 +1471,14 @@
       "temperature_change_c": 1.5,
       "rotation_scores": {
         "current": {
-          "water": 29.6,
-          "climate": 90.3,
-          "overall": 57.4
+          "water": 32.5,
+          "climate": 91.2,
+          "overall": 58.8
         },
         "alt_a": {
-          "water": 41.1,
-          "climate": 70.7,
-          "overall": 52.6
+          "water": 45.9,
+          "climate": 71.3,
+          "overall": 54.4
         },
         "alt_b": {
           "water": 27.0,
@@ -1196,14 +1492,14 @@
       "temperature_change_c": 3,
       "rotation_scores": {
         "current": {
-          "water": 26.8,
-          "climate": 85.3,
-          "overall": 55.1
+          "water": 29.7,
+          "climate": 86.4,
+          "overall": 56.5
         },
         "alt_a": {
-          "water": 38.7,
-          "climate": 64.4,
-          "overall": 50.1
+          "water": 43.6,
+          "climate": 65.4,
+          "overall": 52.0
         },
         "alt_b": {
           "water": 23.5,
@@ -1217,14 +1513,14 @@
       "temperature_change_c": 0,
       "rotation_scores": {
         "current": {
-          "water": 33.8,
-          "climate": 94.3,
-          "overall": 60.1
+          "water": 36.6,
+          "climate": 94.9,
+          "overall": 61.4
         },
         "alt_a": {
-          "water": 44.9,
-          "climate": 77.2,
-          "overall": 55.8
+          "water": 49.5,
+          "climate": 77.4,
+          "overall": 57.4
         },
         "alt_b": {
           "water": 33.2,
@@ -1238,14 +1534,14 @@
       "temperature_change_c": 1.5,
       "rotation_scores": {
         "current": {
-          "water": 31.0,
-          "climate": 90.3,
-          "overall": 58.0
+          "water": 33.9,
+          "climate": 91.2,
+          "overall": 59.4
         },
         "alt_a": {
-          "water": 42.4,
-          "climate": 70.7,
-          "overall": 53.2
+          "water": 47.2,
+          "climate": 71.3,
+          "overall": 54.9
         },
         "alt_b": {
           "water": 29.7,
@@ -1259,14 +1555,14 @@
       "temperature_change_c": 3,
       "rotation_scores": {
         "current": {
-          "water": 28.1,
-          "climate": 85.3,
-          "overall": 55.6
+          "water": 31.1,
+          "climate": 86.4,
+          "overall": 57.1
         },
         "alt_a": {
-          "water": 40.0,
-          "climate": 64.4,
-          "overall": 50.6
+          "water": 44.9,
+          "climate": 65.4,
+          "overall": 52.5
         },
         "alt_b": {
           "water": 26.2,
@@ -1280,14 +1576,14 @@
       "temperature_change_c": 0,
       "rotation_scores": {
         "current": {
-          "water": 35.2,
-          "climate": 94.3,
-          "overall": 60.7
+          "water": 37.9,
+          "climate": 94.9,
+          "overall": 61.9
         },
         "alt_a": {
-          "water": 46.2,
-          "climate": 77.2,
-          "overall": 56.3
+          "water": 50.8,
+          "climate": 77.4,
+          "overall": 57.9
         },
         "alt_b": {
           "water": 35.9,
@@ -1301,14 +1597,14 @@
       "temperature_change_c": 1.5,
       "rotation_scores": {
         "current": {
-          "water": 32.4,
-          "climate": 90.3,
-          "overall": 58.6
+          "water": 35.2,
+          "climate": 91.2,
+          "overall": 59.9
         },
         "alt_a": {
-          "water": 43.7,
-          "climate": 70.7,
-          "overall": 53.7
+          "water": 48.4,
+          "climate": 71.3,
+          "overall": 55.4
         },
         "alt_b": {
           "water": 32.4,
@@ -1322,14 +1618,14 @@
       "temperature_change_c": 3,
       "rotation_scores": {
         "current": {
-          "water": 29.5,
-          "climate": 85.3,
-          "overall": 56.2
+          "water": 32.4,
+          "climate": 86.4,
+          "overall": 57.6
         },
         "alt_a": {
-          "water": 41.3,
-          "climate": 64.4,
-          "overall": 51.1
+          "water": 46.1,
+          "climate": 65.4,
+          "overall": 53.0
         },
         "alt_b": {
           "water": 28.9,

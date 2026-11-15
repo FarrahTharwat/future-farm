@@ -29,10 +29,10 @@ def crop_heat(crop_id, daily, db, cal, temp_shift_c=0.0, threshold_shift_c=0.0, 
             "degree_days_per_year": float(excess.sum()) / years,
             "stress_days_per_year": float((excess / cap).clip(upper=1.0).sum()) / years}
 
-def rotation_climate(rotation_id, rotations, daily, db, cal, temp_shift_c=0.0, threshold_shift_c=0.0):
+def rotation_climate(rotation_id, rotations, daily, db, cal, temp_shift_c=0.0, threshold_shift_c=0.0, cap=None):
     steps = rotations[rotations["rotation_id"] == rotation_id].sort_values("step")
     cycle = int(steps["cycle_years"].iloc[0])
-    per_step = [crop_heat(c, daily, db, cal, temp_shift_c, threshold_shift_c) for c in steps["crop_id"]]
+    per_step = [crop_heat(c, daily, db, cal, temp_shift_c, threshold_shift_c, cap) for c in steps["crop_id"]]
     season = sum(s["season_days_per_year"] for s in per_step)
     heat = sum(s["heat_days_per_year"] for s in per_step)
     degree = sum(s["degree_days_per_year"] for s in per_step)

@@ -10,6 +10,8 @@ Change this file only with everyone's agreement, and update this document first.
 - New per rotation: `stress_test`, `feasibility_warnings`, `field_timeline`, `details.water_deficit_mm`.
 - New top level: `sensitivity`, `uncertainty_ranges`, `flip_points`, `et0_source`, `water_supply_assumption_mm`.
 - Warming now also raises ET0, so the warming slider moves the water score as well as the climate score.
+- New per rotation: `tied_with`. New in `uncertainty_ranges`: `leader_ever_changes`, `smallest_lead_points`, and `severity_cap_c` in each case.
+- Flip-point sentences now read "As the weight on X rises, the top rotation changes from A to B at about N%."
 
 ## Top level
 | Key | Type | Meaning |
@@ -21,7 +23,7 @@ Change this file only with everyone's agreement, and update this document first.
 | `rotations` | array (3) | One entry per rotation, see below |
 | `ranking_stability` | object | Share of priority settings (weights swept in steps of 10) under which each rotation ranks first |
 | `sensitivity` | object | Overall scores and ranking when every heat limit is shifted -2 / 0 / +2 C. Keys `heat_limit_shift_-2C`, `heat_limit_shift_+0C`, `heat_limit_shift_+2C`, each with `overall` and `ranking` |
-| `uncertainty_ranges` | object | Reruns across water range (ET0 x0.9 / 1.0 / x1.1) and heat limits (-2 / 0 / +2 C), see below |
+| `uncertainty_ranges` | object | Reruns across water range (ET0 x0.9 / 1.0 / x1.1), heat limits (-2 / 0 / +2 C) and heat severity cap (5 / 10 / 15 C), see below |
 | `flip_points` | object | For each criterion (`water`, `climate`, `soil_health`), where the top-ranked rotation changes as that weight is swept 0-100%, see below |
 | `et0_source` | string | Where ET0 came from. If it says TEMPORARY, ET0 is a placeholder |
 | `scenario_variants` | array (9) | Precomputed rain x warming grid for the sliders |
@@ -35,7 +37,8 @@ Change this file only with everyone's agreement, and update this document first.
 | `name` | string | Display label |
 | `crops` | array | Crop ids in the rotation |
 | `cycle_years` | integer | Length of the rotation cycle |
-| `rank` | integer | 1 to 3 by overall score |
+| `rank` | integer | 1 to 3 by overall score. Strict order, even for ties |
+| `tied_with` | array of rotation ids | Other rotations whose overall score is within 1 point. If not empty, show "tied" instead of a strict rank between them |
 | `scores` | object | `water`, `climate`, `soil_health`, `overall`, each 0-100 (higher is better) |
 | `contributions` | object | weight x score for each criterion. They add up to `overall`. Use as a stacked bar |
 | `stress_test` | object | `overall_under_stress`, `retention_pct`, `rank_baseline`, `rank_under_stress`, `scenario` (rain_pct, temp_c), `note` |
@@ -43,6 +46,7 @@ Change this file only with everyone's agreement, and update this document first.
 | `feasibility_warnings` | array of strings | Empty if the rotation fits within the assumed water supply |
 | `explanations` | array of strings | Ready-made sentences to display |
 | `field_timeline` | array | One entry per cycle year and month, see below |
+| `heat_degree_days_per_year` | number | Total degrees above the heat limits per year across the growing seasons. Sits at rotation level, next to `details`, not inside it |
 | `uncertainty` | object | `level` and `reasons` |
 
 ## `field_timeline` entries
@@ -58,12 +62,15 @@ Change this file only with everyone's agreement, and update this document first.
 - Match the sliders to an entry on both values and read it. Do not interpolate or calculate.
 - The 0 / 0 entry equals each rotation's headline scores.
 - Soil health is held constant in the grid.
+- When you show an order for a slider setting, treat rotations whose `overall` scores are within 1 point as tied (the same rule as `tied_with`). Alt A and Alt B swap places inside the grid.
 
 ## `uncertainty_ranges`
 - `overall_range`: `{rotation_id: {"min", "max"}}` of the overall score across all cases. Draw as error bars.
-- `cases_ranked_first`: how many of the cases each rotation ranks first in. `cases_total`: number of cases (9).
-- `ranking_ever_changes`: true if any case orders the rotations differently from the others.
-- `cases`: the individual cases, each with `et0_factor`, `heat_limit_shift_c`, `overall`, `ranking`.
+- `cases_ranked_first`: how many of the cases each rotation ranks first in. `cases_total`: number of cases (27: three water factors x three heat-limit shifts x three severity caps).
+- `leader_ever_changes`: true if the top rotation differs between any two cases. This is the flag to show as "is the winner stable?".
+- `ranking_ever_changes`: true if the full order differs between any two cases. It can be true only because second and third place swap, so do not read it as the leader being unstable.
+- `smallest_lead_points`: the smallest margin of first place over second place across all cases.
+- `cases`: the individual cases, each with `et0_factor`, `heat_limit_shift_c`, `severity_cap_c`, `overall`, `ranking`.
 - `note`: what was varied. Soil health is held constant.
 
 ## `flip_points`

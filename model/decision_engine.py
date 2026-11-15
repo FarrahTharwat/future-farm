@@ -24,6 +24,7 @@ WEIGHTS = {"water": 40, "climate": 25, "soil_health": 35}      # default farmer 
 HARSH = {"rain_pct": -20, "temp_c": 1.5}                        # the stress test
 RAIN_STEPS, TEMP_STEPS = [-20, 0, 20], [0, 1.5, 3]              # what-if grid for the sliders
 TEMP_ET0 = [20, 35, 70, 110, 150, 180, 200, 175, 125, 80, 40, 20]   # TEMPORARY, mm per month
+TIE_MARGIN = 1.0                  # overall scores within this many points are shown as a tie, not a strict rank
 
 def load_climate():
     """Monthly climate table. ET0 comes from, in order: an et0_mm_mean column in environmental_features.csv
@@ -55,34 +56,46 @@ def what_if(rid, rain_pct, temp_c, clim, daily, rots, db, cal):
     return water, climate
 
 
-ET0_FACTORS = [0.9, 1.0, 1.1]    # DS2's water min / central / max are -10% / 0 / +10% of the central value
-HEAT_SHIFTS = [-2, 0, 2]         # heat limits are estimates: test +-2 C
+ET0_FACTORS = [0.9, 1.0, 1.1]        # DS2's water min / central / max are -10% / 0 / +10% of the central value
+HEAT_SHIFTS = [-2, 0, 2]             # heat limits are estimates: test +-2 C
+SEVERITY_CAPS = [5.0, 10.0, 15.0]    # degrees above the limit at which a day counts as fully stressed (judgement)
+
+def _lead(ov):
+    top = sorted(ov.values(), reverse=True)
+    return round(top[0] - top[1], 1)
 
 def uncertainty_ranges(rots, clim, daily, db, cal, all_scores):
-    """Rerun overall scores across DS2's water range and the heat-limit range. Reports whether the ranking holds."""
-    cases = []
+    """Rerun overall scores across DS2's water range, the heat-limit range and the heat-severity cap (27 cases).
+    Water depends only on the ET0 factor and climate only on (heat shift, cap), so each is computed once."""
+    water = {}
     for f in ET0_FACTORS:
         c2 = clim.copy()
         c2["et0_mm_mean"] = c2["et0_mm_mean"] * f
+        water[f] = {rid: rotation_water(rid, rots, c2, db, cal)["water_score"] for rid in ROTATIONS}
+    climate = {(dt, cap): {rid: rotation_climate(rid, rots, daily, db, cal, threshold_shift_c=dt, cap=cap)["climate_score"]
+                           for rid in ROTATIONS}
+               for dt in HEAT_SHIFTS for cap in SEVERITY_CAPS}
+    cases = []
+    for f in ET0_FACTORS:
         for dt in HEAT_SHIFTS:
-            ov = {}
-            for rid in ROTATIONS:
-                wsc = rotation_water(rid, rots, c2, db, cal)["water_score"]
-                csc = rotation_climate(rid, rots, daily, db, cal, threshold_shift_c=dt)["climate_score"]
-                ov[rid] = score_rotation({"water": wsc, "climate": csc,
-                                          "soil_health": all_scores[rid]["soil_health"]}, WEIGHTS)["overall"]
-            cases.append({"et0_factor": f, "heat_limit_shift_c": dt, "overall": ov,
-                          "ranking": sorted(ov, key=lambda r: -ov[r])})
+            for cap in SEVERITY_CAPS:
+                ov = {rid: score_rotation({"water": water[f][rid], "climate": climate[(dt, cap)][rid],
+                                           "soil_health": all_scores[rid]["soil_health"]}, WEIGHTS)["overall"]
+                      for rid in ROTATIONS}
+                cases.append({"et0_factor": f, "heat_limit_shift_c": dt, "severity_cap_c": cap, "overall": ov,
+                              "ranking": sorted(ov, key=lambda r: -ov[r])})
     first = {rid: sum(c["ranking"][0] == rid for c in cases) for rid in ROTATIONS}
     return {
-        "note": "Water range = DS2's -10%/+10% around the central value; heat limits shifted +-2 C; soil score held constant",
+        "note": "Water range = DS2's -10%/+10% around the central value; heat limits shifted +-2 C; heat severity cap 5/10/15 C; soil score held constant",
         "overall_range": {rid: {"min": min(c["overall"][rid] for c in cases),
                                 "max": max(c["overall"][rid] for c in cases)} for rid in ROTATIONS},
         "cases_ranked_first": first,
         "cases_total": len(cases),
-        "ranking_ever_changes": len({tuple(c["ranking"]) for c in cases}) > 1,
+        "leader_ever_changes": len({c["ranking"][0] for c in cases}) > 1,
+        "ranking_ever_changes": len({tuple(c["ranking"]) for c in cases}) > 1,   # any change of order, incl. 2nd/3rd swapping
+        "smallest_lead_points": min(_lead(c["overall"]) for c in cases),          # first place's smallest margin over second
         "cases": cases}
-    
+
 def flip_points(all_scores, criteria, weights, names, step=0.5):
     """For each criterion, sweep its weight from 0 to 100%. The other criteria keep their current ratio.
     Report where the top-ranked rotation changes (accurate to one step)."""
@@ -106,15 +119,15 @@ def flip_points(all_scores, criteria, weights, names, step=0.5):
         current_pct = round(100 * weights[k] / total, 1)
         if flips:
             text = (f"With {label} weighted {current_pct}%, {names[leader(current_pct)]} ranks first. "
-                    + " ".join(f"The top rotation changes from {names[f['from']]} to {names[f['to']]} "
-                               f"at about {f['at_weight_pct']}% {label}." for f in flips))
+                    + " ".join(f"As the weight on {label} rises, the top rotation changes from {names[f['from']]} "
+                               f"to {names[f['to']]} at about {f['at_weight_pct']}%." for f in flips))
         else:
             text = f"{names[first]} ranks first at every {label} weight from 0% to 100%."
         out[k] = {"current_weight_pct": current_pct, "leader_at_0_pct": first, "leader_at_100_pct": prev,
                   "flip_points": flips, "top_never_changes": not flips, "sentence": text}
     return out
-    
-    
+
+
 def build():
     db, cal = load_crops()
     rots = load_rotations()
@@ -122,7 +135,7 @@ def build():
     temp_et0 = et0_source == "TEMPORARY"
     daily = load_daily()
     names = rots.drop_duplicates("rotation_id").set_index("rotation_id")["rotation_name"].to_dict()
-        
+
     base, stress, parts = {}, {}, {}
     for rid in ROTATIONS:
         w = rotation_water(rid, rots, clim, db, cal)
@@ -136,6 +149,8 @@ def build():
 
     rank_base = {r: i + 1 for i, (r, _) in enumerate(sorted(base.items(), key=lambda x: -x[1]["overall"]))}
     rank_stress = {r: i + 1 for i, (r, _) in enumerate(sorted(stress.items(), key=lambda x: -x[1]))}
+    tied = {r: [o for o in ROTATIONS if o != r and round(abs(base[o]["overall"] - base[r]["overall"]), 1) <= TIE_MARGIN]
+            for r in ROTATIONS}
 
     rotation_results, all_scores = [], {}
     for rid in ROTATIONS:
@@ -153,6 +168,9 @@ def build():
             f"Roughly {s['bare_months_per_year']} months per year without living green cover.",
             f"Stress test ({HARSH['rain_pct']}% rain, +{HARSH['temp_c']} C): its overall score is "
             f"{stress[rid]} (rank {rank_stress[rid]}, baseline rank {rank_base[rid]})."]
+        if tied[rid]:
+            explanations.append(f"Its overall score is within {TIE_MARGIN:g} point of "
+                                f"{', '.join(names[o] for o in tied[rid])}, so the order between them is effectively a tie.")
         reasons = ["Crop coefficients, heat limits and soil ratings are not yet verified by a human",
                    "Soil properties (SoilGrids) are not used in the scores yet",
                    "Water supply (1,220 mm) and effective-rain method are unverified assumptions"]
@@ -160,7 +178,7 @@ def build():
             reasons.insert(0, "Evapotranspiration (ET0) is a TEMPORARY estimate, not NASA-derived")
         rotation_results.append({
             "id": rid, "name": names[rid], "crops": list(dict.fromkeys(x["crop_id"] for x in w["steps"])),
-            "cycle_years": w["cycle_years"], "rank": rank_base[rid],
+            "cycle_years": w["cycle_years"], "rank": rank_base[rid], "tied_with": tied[rid],
             "scores": {**subs, "overall": res["overall"]}, "contributions": res["contributions"],
             "stress_test": {"overall_under_stress": stress[rid], "retention_pct": retention,
                             "rank_baseline": rank_base[rid], "rank_under_stress": rank_stress[rid],
@@ -204,14 +222,14 @@ def build():
         "ranking_stability": weight_sweep(all_scores, CRITERIA),
         "sensitivity": sensitivity,
         "uncertainty_ranges": ranges,
-        "flip_points": flips,       
+        "flip_points": flips,
         "et0_source": et0_source,
         "scenario_variants": variants,
         "scenario_note": "In the grid, water and climate are recalculated for each rain and warming setting; soil health is held constant; overall uses the same weights as the headline score. Warming raises ET0 using an approximate Hargreaves-style scaling.",
         "limitations": ["Satellite soil moisture is not root-zone moisture", "Crop suitability requires local validation",
                         "Soil-health score is a checklist of potential benefits, not a measurement",
                         "Frost risk and soil salinity are not modelled",
-                        "Warming raises water demand by an approximate temperature scaling, not a full evapotranspiration model",]}
+                        "Warming raises water demand by an approximate temperature scaling, not a full evapotranspiration model"]}
 
 if __name__ == "__main__":
     out = build()
@@ -220,14 +238,17 @@ if __name__ == "__main__":
     print(out["data_status"])
     for r in out["rotations"]:
         print(f"{r['id']:8s}", r["scores"], "| stress:", r["stress_test"]["overall_under_stress"],
-              "| rank", r["stress_test"]["rank_baseline"], "->", r["stress_test"]["rank_under_stress"])
+              "| rank", r["stress_test"]["rank_baseline"], "->", r["stress_test"]["rank_under_stress"],
+              "| tied with:", r["tied_with"] or "none")
     print("ET0 source:", out["et0_source"])
     print("share of priority settings each rotation wins:", out["ranking_stability"])
     for k, v in out["sensitivity"].items():
         print(k, v["overall"], "->", v["ranking"])
-        
+
     u = out["uncertainty_ranges"]
     print("overall range:", u["overall_range"])
-    print("ranked first in", u["cases_ranked_first"], "of", u["cases_total"], "cases | ranking ever changes:", u["ranking_ever_changes"])
+    print("ranked first in", u["cases_ranked_first"], "of", u["cases_total"], "cases")
+    print("leader ever changes:", u["leader_ever_changes"], "| any change of order:", u["ranking_ever_changes"],
+          "| smallest lead of first place (points):", u["smallest_lead_points"])
     for k, v in out["flip_points"].items():
         print("flip:", v["sentence"])
