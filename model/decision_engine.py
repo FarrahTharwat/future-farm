@@ -240,7 +240,7 @@ def build():
 
     return {
         "data_status": "PROTOTYPE - inputs not yet verified by a human, not validated results" + (" (temporary ET0)" if temp_et0 else ""),
-        "farm": {"name": "Fallon, Nevada (pilot)", "latitude": 39.47, "longitude": -118.78, "analysis_period": "2001-2025"},
+        "farm": {"name": "Fallon, Nevada (pilot)", "latitude": 39.461142, "longitude": -118.830528, "analysis_period": "2001-2025"},
         "farmer_priorities": WEIGHTS,
         "water_supply_assumption_mm": WATER_SUPPLY_MM,
         "rotations": rotation_results,
