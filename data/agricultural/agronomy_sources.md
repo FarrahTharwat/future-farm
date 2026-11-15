@@ -117,3 +117,7 @@ Every numeric cell is now filled. The cells are not all the same quality, so `es
 - Fallon ETr is a 2001-2010 average from a station in irrigated cropland; POWER-based ET0 from DS1 may differ.
 - Kc values have not had the arid-climate adjustment (FAO-56 Eq. 62), which would raise mid-season Kc by roughly 0.05.
 - Teff, hairy vetch and field pea temperatures and teff rooting depth are the lowest-confidence numbers in the files.
+
+## Alfalfa establishment row (added 2026-11-15)
+
+The current rotation ended its cycle with winter wheat harvested in July of year 1 while alfalfa establishment was listed for April-May of the same year, so both crops counted the same months. A teammate flagged this. `alfalfa_establishment` is a copy of the alfalfa row with seeding in August-September, green months 8;9;10, and the short stage lengths from FAO-56 Table 11 (1st cutting cycle, 10/30/25/10 days). It is used in step 1 of the current rotation. The August-September seeding date is an assumption with no Fallon source yet. A second gap is noted in `rotation_strategies.json` open questions: the current rotation has no crop listed for spring-summer of year 5.
