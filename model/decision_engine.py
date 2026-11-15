@@ -171,6 +171,7 @@ def build():
             "feasibility_warnings": warnings,
             "explanations": explanations,
             "field_timeline": field_timeline(rid, rots, cal),
+            "heat_degree_days_per_year": c["degree_days_per_year"],
             "uncertainty": {"level": "high", "reasons": reasons}})
 
     # How much does the result depend on DS2's heat limits (all placeholders or estimates)?  Shift every limit by -2/0/+2 C.
