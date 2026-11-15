@@ -1,0 +1,678 @@
+fileFormatVersion: 2
+guid: 670b7805ab76b2f458fefcb2ed2821a0
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: -5468096666608001490
+    second: Pondscum3_0
+  - first:
+      213: 4698256032983346922
+    second: Pondscum3_1
+  - first:
+      213: -1813575359675447988
+    second: Pondscum3_2
+  - first:
+      213: -8550445575064522515
+    second: Pondscum3_3
+  - first:
+      213: 9034262185841501273
+    second: Pondscum3_4
+  - first:
+      213: -1548405195871797523
+    second: Pondscum3_5
+  - first:
+      213: 3999905342263837054
+    second: Pondscum3_6
+  - first:
+      213: -5877115242133498627
+    second: Pondscum3_7
+  - first:
+      213: -589458575074054519
+    second: Pondscum3_8
+  - first:
+      213: -735085553563930201
+    second: Pondscum3_9
+  - first:
+      213: -1035901275721033458
+    second: Pondscum3_10
+  - first:
+      213: -2479945893708956839
+    second: Pondscum3_11
+  - first:
+      213: 8110259496544690204
+    second: Pondscum3_12
+  - first:
+      213: 8183889575427604270
+    second: Pondscum3_13
+  - first:
+      213: -6220431175438455438
+    second: Pondscum3_14
+  - first:
+      213: 7981248216552063218
+    second: Pondscum3_15
+  - first:
+      213: -8872739167351781067
+    second: Pondscum3_16
+  - first:
+      213: 1531963784920062178
+    second: Pondscum3_17
+  - first:
+      213: 825386165638589439
+    second: Pondscum3_18
+  - first:
+      213: 3753042206912178649
+    second: Pondscum3_19
+  - first:
+      213: -6586596994135293515
+    second: Pondscum3_20
+  externalObjects: {}
+  serializedVersion: 13
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+    flipGreenChannel: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  vTOnly: 0
+  ignoreMipmapLimit: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 1
+    aniso: 1
+    mipBias: 0
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 100
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationMethod: 0
+  spriteTessellationDetail: -1
+  spriteGeometrySubdivision: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  flipbookRows: 1
+  flipbookColumns: 1
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  ignorePngGamma: 0
+  applyGammaDecoding: 0
+  swizzle: 50462976
+  cookieLightType: 0
+  platformSettings:
+  - serializedVersion: 4
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 4
+    buildTarget: WebGL
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 1
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    ignorePlatformSupport: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Pondscum3_0
+      rect:
+        serializedVersion: 2
+        x: 366
+        y: 680
+        width: 24
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2e155d8d0b6d14b0800000000000000
+      internalID: -5468096666608001490
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_1
+      rect:
+        serializedVersion: 2
+        x: 348
+        y: 603
+        width: 23
+        height: 30
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: aeeeec538fe833140800000000000000
+      internalID: 4698256032983346922
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_2
+      rect:
+        serializedVersion: 2
+        x: 411
+        y: 591
+        width: 97
+        height: 43
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c45c421b1d2e4d6e0800000000000000
+      internalID: -1813575359675447988
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_3
+      rect:
+        serializedVersion: 2
+        x: 515
+        y: 621
+        width: 34
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: de0f7fa3d07b65980800000000000000
+      internalID: -8550445575064522515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_4
+      rect:
+        serializedVersion: 2
+        x: 256
+        y: 246
+        width: 381
+        height: 352
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 954a3daa795206d70800000000000000
+      internalID: 9034262185841501273
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_5
+      rect:
+        serializedVersion: 2
+        x: 269
+        y: 581
+        width: 20
+        height: 22
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: dee31bb9da5f28ae0800000000000000
+      internalID: -1548405195871797523
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_6
+      rect:
+        serializedVersion: 2
+        x: 489
+        y: 525
+        width: 146
+        height: 88
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e71c2d467b4828730800000000000000
+      internalID: 3999905342263837054
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_7
+      rect:
+        serializedVersion: 2
+        x: 631
+        y: 569
+        width: 31
+        height: 26
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: df4599853da407ea0800000000000000
+      internalID: -5877115242133498627
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_8
+      rect:
+        serializedVersion: 2
+        x: 218
+        y: 482
+        width: 79
+        height: 51
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 98e27ee8c82d1d7f0800000000000000
+      internalID: -589458575074054519
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_9
+      rect:
+        serializedVersion: 2
+        x: 232
+        y: 530
+        width: 45
+        height: 40
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 7a1fc4c65937cc5f0800000000000000
+      internalID: -735085553563930201
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_10
+      rect:
+        serializedVersion: 2
+        x: 613
+        y: 465
+        width: 57
+        height: 91
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e091646374dbf91f0800000000000000
+      internalID: -1035901275721033458
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_11
+      rect:
+        serializedVersion: 2
+        x: 134
+        y: 414
+        width: 23
+        height: 17
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 95bf9475956759dd0800000000000000
+      internalID: -2479945893708956839
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_12
+      rect:
+        serializedVersion: 2
+        x: 173
+        y: 416
+        width: 84
+        height: 67
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: c10e8c7ca0e6d8070800000000000000
+      internalID: 8110259496544690204
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_13
+      rect:
+        serializedVersion: 2
+        x: 182
+        y: 183
+        width: 156
+        height: 247
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: e2f72607534039170800000000000000
+      internalID: 8183889575427604270
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_14
+      rect:
+        serializedVersion: 2
+        x: 588
+        y: 283
+        width: 128
+        height: 199
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 27da93e9dc69ca9a0800000000000000
+      internalID: -6220431175438455438
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_15
+      rect:
+        serializedVersion: 2
+        x: 310
+        y: 162
+        width: 133
+        height: 89
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2f04ecb67f613ce60800000000000000
+      internalID: 7981248216552063218
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_16
+      rect:
+        serializedVersion: 2
+        x: 434
+        y: 192
+        width: 173
+        height: 102
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5394d41bcb2bdd480800000000000000
+      internalID: -8872739167351781067
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_17
+      rect:
+        serializedVersion: 2
+        x: 610
+        y: 237
+        width: 46
+        height: 38
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 2e85ce812f0a24510800000000000000
+      internalID: 1531963784920062178
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_18
+      rect:
+        serializedVersion: 2
+        x: 179
+        y: 210
+        width: 26
+        height: 21
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: ffbe865385c547b00800000000000000
+      internalID: 825386165638589439
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_19
+      rect:
+        serializedVersion: 2
+        x: 405
+        y: 163
+        width: 45
+        height: 56
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 9d96c02b00c751430800000000000000
+      internalID: 3753042206912178649
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Pondscum3_20
+      rect:
+        serializedVersion: 2
+        x: 558
+        y: 149
+        width: 25
+        height: 29
+      alignment: 0
+      pivot: {x: 0, y: 0}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      customData: 
+      outline: []
+      physicsShape: []
+      tessellationDetail: -1
+      bones: []
+      spriteID: 5b109ed5ee4b794a0800000000000000
+      internalID: -6586596994135293515
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    customData: 
+    physicsShape: []
+    bones: []
+    spriteID: 
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+    spriteCustomMetadata:
+      entries: []
+    nameFileIdTable:
+      Pondscum3_0: -5468096666608001490
+      Pondscum3_1: 4698256032983346922
+      Pondscum3_10: -1035901275721033458
+      Pondscum3_11: -2479945893708956839
+      Pondscum3_12: 8110259496544690204
+      Pondscum3_13: 8183889575427604270
+      Pondscum3_14: -6220431175438455438
+      Pondscum3_15: 7981248216552063218
+      Pondscum3_16: -8872739167351781067
+      Pondscum3_17: 1531963784920062178
+      Pondscum3_18: 825386165638589439
+      Pondscum3_19: 3753042206912178649
+      Pondscum3_2: -1813575359675447988
+      Pondscum3_20: -6586596994135293515
+      Pondscum3_3: -8550445575064522515
+      Pondscum3_4: 9034262185841501273
+      Pondscum3_5: -1548405195871797523
+      Pondscum3_6: 3999905342263837054
+      Pondscum3_7: -5877115242133498627
+      Pondscum3_8: -589458575074054519
+      Pondscum3_9: -735085553563930201
+  mipmapLimitGroupName: 
+  pSDRemoveMatte: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
