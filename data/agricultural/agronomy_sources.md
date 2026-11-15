@@ -105,7 +105,7 @@ Every numeric cell is now filled. The cells are not all the same quality, so `es
 | Rooting depth for rye, vetch, teff | Analog rows (barley, berseem clover); teff is a low-confidence estimate | Estimate |
 | `temp_min_c`, `temp_optimal_min_c`, `temp_optimal_max_c` | ECOCROP data sheets for alfalfa, maize and rye (S18); ECOCROP-derived table for wheat (S19); other crops are estimates (see `value_status`) | Mixed |
 | `heat_threshold_c` | General agronomic stress threshold for daily maximum temperature. ECOCROP's temperatures are mean-temperature ranges, so its absolute maximum is not used here | Estimate |
-| `season_water_min_mm`, `season_water_max_mm` | Sum of daily Kc x ETo over the stage lengths. ETo = Fallon AgriMet ETr (S17) divided by 1.2 (S20). Min and max are -10% and +10% of the central value; winter wheat min uses a season cut at 15 July | Derived |
+| `season_water_min_mm`, `season_water_max_mm` | Sum of daily Kc x ETo over the stage lengths. ETo = Fallon AgriMet ETr (S17) divided by 1.2 (S20). Min and max are -10% and +10% of the central value; winter wheat uses a season ending 15 July | Derived |
 | Stage lengths | FAO-56 Table 11 rows named in the calendar notes. Rye and vetch are fitted to their plant-to-termination windows | Sourced / estimate |
 | Planting and harvest months | Planting months are assumptions. Harvest months are recomputed from planting plus stage length so months and stage lengths agree | Assumption |
 | `none` in `rotation_strategies.csv` | Means "not applicable" (no planting that year, not a cover crop, no swap offered) | n/a |
@@ -113,7 +113,7 @@ Every numeric cell is now filled. The cells are not all the same quality, so `es
 **Cross-check:** the computed alfalfa season water (about 1000 mm, range 900-1100) is close to the typical local irrigation statement of 3.5-4.0 acre-ft (1067-1219 mm, observation O01), which is expected because irrigation also covers losses and some rainfall.
 
 **Known weak points:**
-- Winter wheat's central water use (about 1000 mm) is as high as alfalfa's because the FAO stage lengths come from Idaho (335 days). The Fallon season is probably shorter, so treat the lower end of its range (about 820 mm) as more likely and have DS3 check the Alt A water score.
+- Winter wheat's season was shortened on 2026-11-15 to end on 15 July (303 days, stage lengths scaled from the Idaho FAO row, a DS2 adjustment). Central water use is now about 788 mm (range 710-870). This changes its calendar, green-cover months and water range, so DS3 should rerun the Alt A and current rotations. A Nevada winter wheat harvest-date source is still needed.
 - Fallon ETr is a 2001-2010 average from a station in irrigated cropland; POWER-based ET0 from DS1 may differ.
 - Kc values have not had the arid-climate adjustment (FAO-56 Eq. 62), which would raise mid-season Kc by roughly 0.05.
 - Teff, hairy vetch and field pea temperatures and teff rooting depth are the lowest-confidence numbers in the files.
