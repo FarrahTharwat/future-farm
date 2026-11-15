@@ -45,7 +45,8 @@ def soil_health(rotation_id, rotations, db, cal, weights=WEIGHTS):
                   for c in crops) / len(crops)
 
     # 4. diversity: different crops in the cycle (4 or more counts as full marks)
-    diversity = min(len(set(crops)) / 4, 1.0)
+    species = {c.replace("_establishment", "") for c in crops}   # establishment year is the same species as alfalfa
+    diversity = min(len(species) / 4, 1.0)
 
     indicators = {"nitrogen": nitrogen, "cover": cover, "organic_inputs": organic, "diversity": diversity}
     contributions = {k: round(100 * weights[k] * v, 1) for k, v in indicators.items()}
