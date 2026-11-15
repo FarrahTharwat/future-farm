@@ -13,8 +13,18 @@ import pandas as pd
 
 SEVERITY_CAP_C = 10.0   # degrees above the limit at which a day counts as fully stressed [UNVERIFIED judgement]
 
-def load_daily(path="data/raw/nasa_power/power_daily.csv"):
-    return pd.read_csv(path, index_col=0, parse_dates=True)
+# DS1's weather_daily.csv uses descriptive column names; the model uses the NASA POWER names. Both schemas work.
+POWER_NAMES = {"temperature_avg": "T2M", "temperature_max": "T2M_MAX", "temperature_min": "T2M_MIN",
+               "rainfall": "PRECTOTCORR", "humidity": "RH2M", "wind_speed": "WS2M",
+               "solar_radiation": "ALLSKY_SFC_SW_DWN"}
+
+def load_daily(path="data/processed/weather_daily.csv"):
+    """Daily weather indexed by date, with NASA POWER column names (T2M_MAX, PRECTOTCORR, ...)."""
+    d = pd.read_csv(path, index_col=0, parse_dates=True).rename(columns=POWER_NAMES)
+    missing = [c for c in ("T2M", "T2M_MAX", "PRECTOTCORR", "RH2M", "ALLSKY_SFC_SW_DWN") if c not in d.columns]
+    if missing:
+        raise ValueError(f"{path} is missing weather columns {missing}")
+    return d
 
 def crop_heat(crop_id, daily, db, cal, temp_shift_c=0.0, threshold_shift_c=0.0, cap=None):
     cap = SEVERITY_CAP_C if cap is None else cap

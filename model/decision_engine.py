@@ -26,19 +26,44 @@ RAIN_STEPS, TEMP_STEPS = [-20, 0, 20], [0, 1.5, 3]              # what-if grid f
 TEMP_ET0 = [20, 35, 70, 110, 150, 180, 200, 175, 125, 80, 40, 20]   # TEMPORARY, mm per month
 TIE_MARGIN = 1.0                  # overall scores within this many points are shown as a tie, not a strict rank
 
-def load_climate():
-    """Monthly climate table. ET0 comes from, in order: an et0_mm_mean column in environmental_features.csv
-    (DS1's own series), data/processed/et0_monthly.csv (Fallon AgriMet station, converted), or a TEMPORARY list."""
-    clim = pd.read_csv("data/processed/environmental_features.csv", index_col="month")
-    source = "environmental_features.csv"
-    if "et0_mm_mean" not in clim.columns:
-        if os.path.exists("data/processed/et0_monthly.csv"):
-            clim["et0_mm_mean"] = pd.read_csv("data/processed/et0_monthly.csv", index_col="month")["et0_mm_mean"]
-            source = "USBR AgriMet Fallon station (2001-2010), converted to grass reference"
-        else:
-            clim["et0_mm_mean"] = TEMP_ET0
-            source = "TEMPORARY"
-    return clim, source
+# ---- Model inputs (the only two switches that decide where the data comes from) -------------------------------
+WEATHER_FILE = "data/processed/weather_daily.csv"   # DS1: daily NASA POWER at the farm point (2001-2025)
+ET0_SOURCE = "nasa"        # "nasa": DS1's FAO-56 Penman-Monteith ET0 (column et0_mm_mean in environmental_features.csv)
+                           # "agrimet": DS2's Fallon station series (et0_monthly.csv, alfalfa reference / 1.2)
+NASA_ET0_FILE = "data/processed/environmental_features.csv"
+AGRIMET_ET0_FILE = "data/processed/et0_monthly.csv"
+
+def climate_from_daily(daily):
+    """Typical-year table (index = calendar month 1-12) built from the daily weather: mean monthly rain total,
+    mean monthly temperature, etc. The model computes this itself, so it never depends on which columns
+    environmental_features.csv happens to hold."""
+    m = daily.resample("MS").agg({"T2M": "mean", "T2M_MAX": "mean", "PRECTOTCORR": "sum",
+                                  "RH2M": "mean", "ALLSKY_SFC_SW_DWN": "mean"})
+    g = m.groupby(m.index.month)
+    out = pd.DataFrame({"rain_mm_mean": g["PRECTOTCORR"].mean(), "rain_mm_std": g["PRECTOTCORR"].std(),
+                        "temp_c_mean": g["T2M"].mean(), "temp_max_c_mean": g["T2M_MAX"].mean(),
+                        "humidity_pct_mean": g["RH2M"].mean(), "solar_mean": g["ALLSKY_SFC_SW_DWN"].mean()})
+    out.index.name = "month"
+    return out
+
+def load_climate(daily):
+    """Monthly climate table: rain and temperature from the daily weather, ET0 from the source chosen above.
+    Returns (table, text describing the ET0 source)."""
+    clim = climate_from_daily(daily)
+    if ET0_SOURCE == "nasa":
+        f = pd.read_csv(NASA_ET0_FILE, index_col="month")
+        if "et0_mm_mean" not in f.columns or len(f) != 12 or f["et0_mm_mean"].isna().any():
+            raise ValueError(f"{NASA_ET0_FILE} needs 12 monthly values in a column called et0_mm_mean "
+                             f"(run pipeline/feature_engineering.py), or set ET0_SOURCE = 'agrimet'")
+        clim["et0_mm_mean"] = f["et0_mm_mean"]
+        return clim, "NASA POWER daily weather, FAO-56 Penman-Monteith (DS1), monthly mean 2001-2025"
+    if ET0_SOURCE != "agrimet":
+        raise ValueError("ET0_SOURCE must be 'nasa' or 'agrimet'")
+    if os.path.exists(AGRIMET_ET0_FILE):
+        clim["et0_mm_mean"] = pd.read_csv(AGRIMET_ET0_FILE, index_col="month")["et0_mm_mean"]
+        return clim, "USBR AgriMet Fallon station (2001-2010), converted to grass reference"
+    clim["et0_mm_mean"] = TEMP_ET0
+    return clim, "TEMPORARY"
 
 def warm_et0(clim, temp_c):
     """ET0 under warming. Hargreaves shape: ET0 scales with (mean temp + 17.8), so +dT raises a month's ET0 by
@@ -131,9 +156,9 @@ def flip_points(all_scores, criteria, weights, names, step=0.5):
 def build():
     db, cal = load_crops()
     rots = load_rotations()
-    clim, et0_source = load_climate()
+    daily = load_daily(WEATHER_FILE)
+    clim, et0_source = load_climate(daily)
     temp_et0 = et0_source == "TEMPORARY"
-    daily = load_daily()
     names = rots.drop_duplicates("rotation_id").set_index("rotation_id")["rotation_name"].to_dict()
 
     base, stress, parts = {}, {}, {}

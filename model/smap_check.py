@@ -15,8 +15,10 @@ import pandas as pd
 
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from water_need import effective_rain
+from climate_score import load_daily
+from decision_engine import WEATHER_FILE, load_climate
 
-SMAP_FILE = "data/processed/soil_moisture.csv"
+SMAP_FILE = "data/processed/smap_soil_moisture.csv"
 MAX_DISTANCE_KM = 15      # the pipeline picks the nearest valid cell per day; far-away cells mix in a different footprint
 MIN_DAYS_PER_MONTH = 5
 
@@ -40,7 +42,7 @@ def monthly_smap(d):
     return m[m["n_days"] >= MIN_DAYS_PER_MONTH].reset_index()
 
 def monthly_rain(years):
-    p = pd.read_csv("data/raw/nasa_power/power_daily.csv", index_col=0, parse_dates=True)
+    p = load_daily(WEATHER_FILE)
     p = p[p.index.year.isin(years)]
     r = p["PRECTOTCORR"].groupby([p.index.year.rename("year"), p.index.month.rename("month")]).sum()
     return r.rename("rain_mm").reset_index()
@@ -48,8 +50,8 @@ def monthly_rain(years):
 def main():
     d, info = load_smap()
     m = monthly_smap(d)
-    et0 = pd.read_csv("data/processed/et0_monthly.csv", index_col="month")["et0_mm_mean"]
-    clim = pd.read_csv("data/processed/environmental_features.csv", index_col="month")["rain_mm_mean"]
+    table, _ = load_climate(load_daily(WEATHER_FILE))
+    et0, clim = table["et0_mm_mean"], table["rain_mm_mean"]
 
     # 1. seasonal shape
     seas = m.groupby("month")["smap"].mean().to_frame("smap_mean")
