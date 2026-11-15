@@ -11,6 +11,21 @@ def load_crops(db_path="data/agricultural/crop_database.csv",
     cal = pd.read_csv(cal_path).set_index("crop_id")
     return db, cal
 
+def effective_rain(p_mm):
+    """Share of a month's rain a crop can actually use (USDA-SCS style approximation, monthly mm).
+    [UNVERIFIED] Written from memory of the FAO irrigation guidance: check against the FAO source before claiming it.
+    In an arid month with little rain it removes only a few percent; in wet months it matters more."""
+    if p_mm <= 250:
+        return p_mm * (125 - 0.2 * p_mm) / 125
+    return 125 + 0.1 * p_mm
+
+DIM = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31]
+CUM = [sum(DIM[:i]) for i in range(12)]            # day-of-year (0-based) on which each month starts
+
+def _month_of(doy):
+    doy %= 365
+    return max(i for i in range(12) if CUM[i] <= doy) + 1
+
 def growing_months(cal_row):
     """'10;11;3;4' -> [10, 11, 3, 4] (kept in the order the crop actually grows)."""
     return [int(m) for m in str(cal_row["green_cover_months"]).split(";")]
@@ -24,21 +39,57 @@ def kc_at(frac, kc_ini, kc_mid, kc_late, stage_fracs):
         return kc_ini + (kc_mid - kc_ini) * (frac - f_ini) / f_dev
     if frac < f_ini + f_dev + f_mid:
         return kc_mid
-    return kc_mid + (kc_late - kc_mid) * (frac - f_ini - f_dev - f_mid) / f_late
+    return kc_mid + (kc_late - kc_mid) * (frac - f_ini - f_dev - f_mid) / f_late if f_late else kc_mid
+
+def season_profile(crop_id, db, cal):
+    """[(calendar month, days of the season falling in that month, average Kc in those days)].
+
+    Annual crops and cover crops: walk the season DAY BY DAY using DS2's stage lengths (initial, development,
+    mid, late), starting at the planting month (the middle of the planting window if it spans two months),
+    and stop at the end of the harvest/termination month.
+    Perennial forage (alfalfa): its stage days describe one cutting, so the growth stages are spread evenly
+    across the growing months in the calendar instead (cutting-averaged Kc).
+    """
+    c, k = db.loc[crop_id], cal.loc[crop_id]
+    kc_i, kc_m, kc_l = c["kc_initial"], c["kc_mid"], c["kc_late"]
+    stages = [k["initial_days"], k["development_days"], k["mid_days"], k["late_days"]]
+    total = sum(stages)
+
+    if c["type"] == "perennial_forage":
+        months = growing_months(k)
+        fr = [x / total for x in stages]
+        return [(m, DIM[m - 1], kc_at((i + 0.5) / len(months), kc_i, kc_m, kc_l, fr)) for i, m in enumerate(months)]
+
+    p1, p2 = int(k["plant_start_month"]), int(k["plant_end_month"])
+    start = CUM[p1 - 1] + (0 if p1 == p2 else sum(DIM[p1 - 1:p2]) // 2)
+    end_doy = CUM[int(k["harvest_end_month"]) - 1] + DIM[int(k["harvest_end_month"]) - 1] - 1
+    length = min(int(total), (end_doy - start) % 365 + 1)
+    ini, dev, mid, late = stages
+    days = {}
+    for d in range(length):
+        if d < ini:
+            kc = kc_i
+        elif d < ini + dev:
+            kc = kc_i + (kc_m - kc_i) * (d - ini) / dev
+        elif d < ini + dev + mid:
+            kc = kc_m
+        else:
+            kc = kc_m + (kc_l - kc_m) * (d - ini - dev - mid) / late if late else kc_m
+        m = _month_of(start + d)
+        n, tot = days.get(m, (0, 0.0))
+        days[m] = (n + 1, tot + kc)
+    return [(m, n, tot / n) for m, (n, tot) in days.items()]
 
 def water_need(crop_id, clim, db, cal):
-    c, k = db.loc[crop_id], cal.loc[crop_id]
-    months = growing_months(k)
-    total = k["initial_days"] + k["development_days"] + k["mid_days"] + k["late_days"]
-    fracs = [k["initial_days"] / total, k["development_days"] / total,
-             k["mid_days"] / total, k["late_days"] / total]
-    need = 0.0
-    for i, m in enumerate(months):
-        frac = (i + 0.5) / len(months)          # middle of this month within the season
-        need += kc_at(frac, c["kc_initial"], c["kc_mid"], c["kc_late"], fracs) * clim.loc[m, "et0_mm_mean"]
-    rain = clim.loc[months, "rain_mm_mean"].sum()
+    need = rain = total_rain = 0.0
+    for m, n, kc in season_profile(crop_id, db, cal):
+        share = n / DIM[m - 1]                              # part of the month the crop is in the field
+        need += kc * clim.loc[m, "et0_mm_mean"] * share
+        total_rain += clim.loc[m, "rain_mm_mean"] * share
+        rain += effective_rain(clim.loc[m, "rain_mm_mean"]) * share   # effective, not total
     irrigation = max(need - rain, 0.0)
-    return {"need_mm": round(need), "rain_mm": round(rain), "irrigation_needed_mm": round(irrigation),
+    return {"need_mm": round(need), "rain_mm": round(rain), "total_rain_mm": round(total_rain),
+            "irrigation_needed_mm": round(irrigation),
             "rain_cover_score": round(100 * min(rain / need, 1.0), 1)}
 
 
@@ -76,5 +127,8 @@ def rotation_water(rotation_id, rotations, clim, db, cal, supply_mm=WATER_SUPPLY
         "yearly_rain_mm": round(rain / cycle),
         "yearly_irrigation_mm": round(yearly_irrigation),
         "water_score": round(100 * max(0.0, 1 - yearly_irrigation / supply_mm), 1),
+        # The score is clamped at 0, so report the real shortage separately (a score of 0 alone hides severity)
+        "water_deficit_mm": round(max(yearly_irrigation - supply_mm, 0.0)),
+        "feasible_within_supply": yearly_irrigation <= supply_mm,
         "steps": per_step,
     }

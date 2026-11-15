@@ -8,10 +8,10 @@
   },
   "farmer_priorities": {
     "water": 40,
-    "climate": 20,
-    "soil_health": 30,
-    "resilience": 10
+    "climate": 25,
+    "soil_health": 35
   },
+  "water_supply_assumption_mm": 1220,
   "rotations": [
     {
       "id": "current",
@@ -21,40 +21,52 @@
         "winter_wheat"
       ],
       "cycle_years": 5,
+      "rank": 1,
       "scores": {
-        "water": 42.0,
-        "climate": 84.5,
+        "water": 40.7,
+        "climate": 77.9,
         "soil_health": 65.8,
-        "resilience": 93.0,
-        "overall": 62.7
+        "overall": 58.8
       },
       "contributions": {
-        "water": 16.8,
-        "climate": 16.9,
-        "soil_health": 19.74,
-        "resilience": 9.3
+        "water": 16.28,
+        "climate": 19.48,
+        "soil_health": 23.03
+      },
+      "stress_test": {
+        "overall_under_stress": 56.2,
+        "retention_pct": 95.6,
+        "rank_baseline": 1,
+        "rank_under_stress": 1,
+        "scenario": {
+          "rain_pct": -20,
+          "temp_c": 1.5
+        },
+        "note": "Shown beside the ranking; not part of the overall score"
       },
       "details": {
-        "yearly_irrigation_mm": 708,
+        "yearly_irrigation_mm": 724,
         "yearly_rain_mm": 72,
-        "heat_days_per_year": 33.1,
+        "water_deficit_mm": 0,
+        "heat_days_per_year": 48.7,
         "bare_months_per_year": 5.8
       },
+      "feasibility_warnings": [],
       "explanations": [
         "Current rotation (baseline: alfalfa stand): its biggest contribution to the overall score comes from soil-health potential.",
-        "Its weakest area is water suitability (score 42.0), which needs local review.",
-        "Needs about 708 mm of irrigation per year; rain covers about 72 mm.",
-        "About 33.1 heat-stress days per year across its growing seasons.",
+        "Its weakest area is water suitability (score 40.7), which needs local review.",
+        "Needs about 724 mm of irrigation per year; usable rain covers about 72 mm.",
+        "About 48.7 heat-stress days per year across its growing seasons.",
         "Roughly 5.8 months per year without living green cover.",
-        "Under -20% rain and +1.5 C it keeps 93.0% of its water and climate suitability."
+        "Stress test (-20% rain, +1.5 C): its overall score is 56.2 (rank 1, baseline rank 1)."
       ],
       "uncertainty": {
         "level": "high",
         "reasons": [
           "Evapotranspiration (ET0) is a TEMPORARY estimate, not NASA-derived",
-          "Crop coefficients, heat limits and soil ratings are unverified placeholders",
-          "Soil properties (SoilGrids) are not used yet",
-          "Satellite soil moisture is not used yet"
+          "Crop coefficients, heat limits and soil ratings are not yet verified by a human",
+          "Soil properties (SoilGrids) are not used in the scores yet",
+          "Water supply (1,220 mm) and effective-rain method are unverified assumptions"
         ]
       }
     },
@@ -67,40 +79,52 @@
         "winter_wheat"
       ],
       "cycle_years": 3,
+      "rank": 3,
       "scores": {
-        "water": 54.3,
-        "climate": 66.1,
-        "soil_health": 50.4,
-        "resilience": 95.6,
-        "overall": 59.6
+        "water": 44.8,
+        "climate": 55.1,
+        "soil_health": 52.9,
+        "overall": 50.2
       },
       "contributions": {
-        "water": 21.72,
-        "climate": 13.22,
-        "soil_health": 15.12,
-        "resilience": 9.56
+        "water": 17.92,
+        "climate": 13.78,
+        "soil_health": 18.51
+      },
+      "stress_test": {
+        "overall_under_stress": 48.7,
+        "retention_pct": 97.0,
+        "rank_baseline": 3,
+        "rank_under_stress": 3,
+        "scenario": {
+          "rain_pct": -20,
+          "temp_c": 1.5
+        },
+        "note": "Shown beside the ranking; not part of the overall score"
       },
       "details": {
-        "yearly_irrigation_mm": 557,
-        "yearly_rain_mm": 57,
-        "heat_days_per_year": 51.7,
-        "bare_months_per_year": 7.0
+        "yearly_irrigation_mm": 674,
+        "yearly_rain_mm": 62,
+        "water_deficit_mm": 0,
+        "heat_days_per_year": 82.5,
+        "bare_months_per_year": 6.0
       },
+      "feasibility_warnings": [],
       "explanations": [
-        "Alternative A: Water-conserving small-grain and pea rotation: its biggest contribution to the overall score comes from water suitability.",
-        "Its weakest area is soil-health potential (score 50.4), which needs local review.",
-        "Needs about 557 mm of irrigation per year; rain covers about 57 mm.",
-        "About 51.7 heat-stress days per year across its growing seasons.",
-        "Roughly 7.0 months per year without living green cover.",
-        "Under -20% rain and +1.5 C it keeps 95.6% of its water and climate suitability."
+        "Alternative A: Water-conserving small-grain and pea rotation: its biggest contribution to the overall score comes from soil-health potential.",
+        "Its weakest area is water suitability (score 44.8), which needs local review.",
+        "Needs about 674 mm of irrigation per year; usable rain covers about 62 mm.",
+        "About 82.5 heat-stress days per year across its growing seasons.",
+        "Roughly 6.0 months per year without living green cover.",
+        "Stress test (-20% rain, +1.5 C): its overall score is 48.7 (rank 3, baseline rank 3)."
       ],
       "uncertainty": {
         "level": "high",
         "reasons": [
           "Evapotranspiration (ET0) is a TEMPORARY estimate, not NASA-derived",
-          "Crop coefficients, heat limits and soil ratings are unverified placeholders",
-          "Soil properties (SoilGrids) are not used yet",
-          "Satellite soil moisture is not used yet"
+          "Crop coefficients, heat limits and soil ratings are not yet verified by a human",
+          "Soil properties (SoilGrids) are not used in the scores yet",
+          "Water supply (1,220 mm) and effective-rain method are unverified assumptions"
         ]
       }
     },
@@ -114,47 +138,59 @@
         "hairy_vetch"
       ],
       "cycle_years": 2,
+      "rank": 2,
       "scores": {
-        "water": 36.9,
-        "climate": 78.6,
-        "soil_health": 62.9,
-        "resilience": 92.9,
-        "overall": 58.6
+        "water": 34.8,
+        "climate": 72.4,
+        "soil_health": 64.1,
+        "overall": 54.5
       },
       "contributions": {
-        "water": 14.76,
-        "climate": 15.72,
-        "soil_health": 18.87,
-        "resilience": 9.29
+        "water": 13.92,
+        "climate": 18.1,
+        "soil_health": 22.43
+      },
+      "stress_test": {
+        "overall_under_stress": 52.3,
+        "retention_pct": 96.0,
+        "rank_baseline": 2,
+        "rank_under_stress": 2,
+        "scenario": {
+          "rain_pct": -20,
+          "temp_c": 1.5
+        },
+        "note": "Shown beside the ranking; not part of the overall score"
       },
       "details": {
-        "yearly_irrigation_mm": 770,
+        "yearly_irrigation_mm": 796,
         "yearly_rain_mm": 94,
-        "heat_days_per_year": 52.3,
-        "bare_months_per_year": 4.5
+        "water_deficit_mm": 0,
+        "heat_days_per_year": 71.7,
+        "bare_months_per_year": 4.0
       },
+      "feasibility_warnings": [],
       "explanations": [
         "Alternative B: Soil-health rotation with legume and winter cover: its biggest contribution to the overall score comes from soil-health potential.",
-        "Its weakest area is water suitability (score 36.9), which needs local review.",
-        "Needs about 770 mm of irrigation per year; rain covers about 94 mm.",
-        "About 52.3 heat-stress days per year across its growing seasons.",
-        "Roughly 4.5 months per year without living green cover.",
-        "Under -20% rain and +1.5 C it keeps 92.9% of its water and climate suitability."
+        "Its weakest area is water suitability (score 34.8), which needs local review.",
+        "Needs about 796 mm of irrigation per year; usable rain covers about 94 mm.",
+        "About 71.7 heat-stress days per year across its growing seasons.",
+        "Roughly 4.0 months per year without living green cover.",
+        "Stress test (-20% rain, +1.5 C): its overall score is 52.3 (rank 2, baseline rank 2)."
       ],
       "uncertainty": {
         "level": "high",
         "reasons": [
           "Evapotranspiration (ET0) is a TEMPORARY estimate, not NASA-derived",
-          "Crop coefficients, heat limits and soil ratings are unverified placeholders",
-          "Soil properties (SoilGrids) are not used yet",
-          "Satellite soil moisture is not used yet"
+          "Crop coefficients, heat limits and soil ratings are not yet verified by a human",
+          "Soil properties (SoilGrids) are not used in the scores yet",
+          "Water supply (1,220 mm) and effective-rain method are unverified assumptions"
         ]
       }
     }
   ],
   "ranking_stability": {
-    "current": 0.74,
-    "alt_a": 0.26,
+    "current": 0.94,
+    "alt_a": 0.06,
     "alt_b": 0.0
   },
   "scenario_variants": [
@@ -163,192 +199,192 @@
       "temperature_change_c": 0,
       "rotation_scores": {
         "current": {
-          "water": 40.8,
-          "climate": 84.5,
-          "overall": 62.3
-        },
-        "alt_a": {
-          "water": 53.4,
-          "climate": 66.1,
-          "overall": 59.3
-        },
-        "alt_b": {
-          "water": 35.3,
-          "climate": 78.6,
-          "overall": 58.0
-        }
-      }
-    },
-    {
-      "rainfall_change_percent": -20,
-      "temperature_change_c": 1.5,
-      "rotation_scores": {
-        "current": {
-          "water": 40.8,
-          "climate": 76.9,
-          "overall": 60.7
-        },
-        "alt_a": {
-          "water": 53.4,
-          "climate": 61.7,
-          "overall": 58.4
-        },
-        "alt_b": {
-          "water": 35.3,
-          "climate": 72.0,
-          "overall": 56.7
-        }
-      }
-    },
-    {
-      "rainfall_change_percent": -20,
-      "temperature_change_c": 3,
-      "rotation_scores": {
-        "current": {
-          "water": 40.8,
-          "climate": 68.6,
-          "overall": 59.1
-        },
-        "alt_a": {
-          "water": 53.4,
-          "climate": 57.6,
-          "overall": 57.6
-        },
-        "alt_b": {
-          "water": 35.3,
-          "climate": 64.7,
-          "overall": 55.2
-        }
-      }
-    },
-    {
-      "rainfall_change_percent": 0,
-      "temperature_change_c": 0,
-      "rotation_scores": {
-        "current": {
-          "water": 42.0,
-          "climate": 84.5,
-          "overall": 62.7
-        },
-        "alt_a": {
-          "water": 54.3,
-          "climate": 66.1,
-          "overall": 59.6
-        },
-        "alt_b": {
-          "water": 36.9,
-          "climate": 78.6,
-          "overall": 58.6
-        }
-      }
-    },
-    {
-      "rainfall_change_percent": 0,
-      "temperature_change_c": 1.5,
-      "rotation_scores": {
-        "current": {
-          "water": 42.0,
-          "climate": 76.9,
-          "overall": 61.2
-        },
-        "alt_a": {
-          "water": 54.3,
-          "climate": 61.7,
-          "overall": 58.7
-        },
-        "alt_b": {
-          "water": 36.9,
-          "climate": 72.0,
-          "overall": 57.3
-        }
-      }
-    },
-    {
-      "rainfall_change_percent": 0,
-      "temperature_change_c": 3,
-      "rotation_scores": {
-        "current": {
-          "water": 42.0,
-          "climate": 68.6,
-          "overall": 59.6
-        },
-        "alt_a": {
-          "water": 54.3,
-          "climate": 57.6,
-          "overall": 57.9
-        },
-        "alt_b": {
-          "water": 36.9,
-          "climate": 64.7,
-          "overall": 55.9
-        }
-      }
-    },
-    {
-      "rainfall_change_percent": 20,
-      "temperature_change_c": 0,
-      "rotation_scores": {
-        "current": {
-          "water": 43.1,
-          "climate": 84.5,
-          "overall": 63.2
-        },
-        "alt_a": {
-          "water": 55.3,
-          "climate": 66.1,
-          "overall": 60.0
-        },
-        "alt_b": {
-          "water": 38.4,
-          "climate": 78.6,
-          "overall": 59.2
-        }
-      }
-    },
-    {
-      "rainfall_change_percent": 20,
-      "temperature_change_c": 1.5,
-      "rotation_scores": {
-        "current": {
-          "water": 43.1,
-          "climate": 76.9,
-          "overall": 61.7
-        },
-        "alt_a": {
-          "water": 55.3,
-          "climate": 61.7,
-          "overall": 59.1
-        },
-        "alt_b": {
-          "water": 38.4,
-          "climate": 72.0,
-          "overall": 57.9
-        }
-      }
-    },
-    {
-      "rainfall_change_percent": 20,
-      "temperature_change_c": 3,
-      "rotation_scores": {
-        "current": {
-          "water": 43.1,
-          "climate": 68.6,
-          "overall": 60.0
-        },
-        "alt_a": {
-          "water": 55.3,
-          "climate": 57.6,
+          "water": 39.5,
+          "climate": 77.9,
           "overall": 58.3
         },
+        "alt_a": {
+          "water": 43.7,
+          "climate": 55.1,
+          "overall": 49.8
+        },
         "alt_b": {
-          "water": 38.4,
-          "climate": 64.7,
-          "overall": 56.5
+          "water": 33.3,
+          "climate": 72.4,
+          "overall": 53.9
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": -20,
+      "temperature_change_c": 1.5,
+      "rotation_scores": {
+        "current": {
+          "water": 39.5,
+          "climate": 69.6,
+          "overall": 56.2
+        },
+        "alt_a": {
+          "water": 43.7,
+          "climate": 50.8,
+          "overall": 48.7
+        },
+        "alt_b": {
+          "water": 33.3,
+          "climate": 66.3,
+          "overall": 52.3
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": -20,
+      "temperature_change_c": 3,
+      "rotation_scores": {
+        "current": {
+          "water": 39.5,
+          "climate": 62.4,
+          "overall": 54.4
+        },
+        "alt_a": {
+          "water": 43.7,
+          "climate": 46.8,
+          "overall": 47.7
+        },
+        "alt_b": {
+          "water": 33.3,
+          "climate": 59.9,
+          "overall": 50.7
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": 0,
+      "temperature_change_c": 0,
+      "rotation_scores": {
+        "current": {
+          "water": 40.7,
+          "climate": 77.9,
+          "overall": 58.8
+        },
+        "alt_a": {
+          "water": 44.8,
+          "climate": 55.1,
+          "overall": 50.2
+        },
+        "alt_b": {
+          "water": 34.8,
+          "climate": 72.4,
+          "overall": 54.5
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": 0,
+      "temperature_change_c": 1.5,
+      "rotation_scores": {
+        "current": {
+          "water": 40.7,
+          "climate": 69.6,
+          "overall": 56.7
+        },
+        "alt_a": {
+          "water": 44.8,
+          "climate": 50.8,
+          "overall": 49.1
+        },
+        "alt_b": {
+          "water": 34.8,
+          "climate": 66.3,
+          "overall": 52.9
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": 0,
+      "temperature_change_c": 3,
+      "rotation_scores": {
+        "current": {
+          "water": 40.7,
+          "climate": 62.4,
+          "overall": 54.9
+        },
+        "alt_a": {
+          "water": 44.8,
+          "climate": 46.8,
+          "overall": 48.1
+        },
+        "alt_b": {
+          "water": 34.8,
+          "climate": 59.9,
+          "overall": 51.3
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": 20,
+      "temperature_change_c": 0,
+      "rotation_scores": {
+        "current": {
+          "water": 41.8,
+          "climate": 77.9,
+          "overall": 59.2
+        },
+        "alt_a": {
+          "water": 45.7,
+          "climate": 55.1,
+          "overall": 50.6
+        },
+        "alt_b": {
+          "water": 36.3,
+          "climate": 72.4,
+          "overall": 55.1
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": 20,
+      "temperature_change_c": 1.5,
+      "rotation_scores": {
+        "current": {
+          "water": 41.8,
+          "climate": 69.6,
+          "overall": 57.1
+        },
+        "alt_a": {
+          "water": 45.7,
+          "climate": 50.8,
+          "overall": 49.5
+        },
+        "alt_b": {
+          "water": 36.3,
+          "climate": 66.3,
+          "overall": 53.5
+        }
+      }
+    },
+    {
+      "rainfall_change_percent": 20,
+      "temperature_change_c": 3,
+      "rotation_scores": {
+        "current": {
+          "water": 41.8,
+          "climate": 62.4,
+          "overall": 55.4
+        },
+        "alt_a": {
+          "water": 45.7,
+          "climate": 46.8,
+          "overall": 48.5
+        },
+        "alt_b": {
+          "water": 36.3,
+          "climate": 59.9,
+          "overall": 51.9
         }
       }
     }
   ],
-  "scenario_note": "In the scenario grid, water and climate are recalculated; soil health and resilience are held at their baseline values. Warming changes heat days but not ET0 yet.",
+  "scenario_note": "In the grid, water and climate are recalculated for each rain and warming setting; soil health is held constant; overall uses the same weights as the headline score. Warming changes heat days but not ET0 yet.",
   "limitations": [
     "Satellite soil moisture is not root-zone moisture",
     "Crop suitability requires local validation",

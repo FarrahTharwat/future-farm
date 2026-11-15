@@ -11,19 +11,19 @@ import pandas as pd
 def load_daily(path="data/raw/nasa_power/power_daily.csv"):
     return pd.read_csv(path, index_col=0, parse_dates=True)
 
-def crop_heat(crop_id, daily, db, cal, temp_shift_c=0.0):
+def crop_heat(crop_id, daily, db, cal, temp_shift_c=0.0, threshold_shift_c=0.0):
     months = [int(m) for m in str(cal.loc[crop_id, "green_cover_months"]).split(";")]
-    threshold = db.loc[crop_id, "heat_threshold_c"]
+    threshold = db.loc[crop_id, "heat_threshold_c"] + threshold_shift_c   # shift tests how sure we are of the limit
     tmax = daily.loc[daily.index.month.isin(months), "T2M_MAX"].dropna() + temp_shift_c
     years = daily.index.year.nunique()
     return {"crop_id": crop_id,
             "season_days_per_year": len(tmax) / years,
             "heat_days_per_year": float((tmax > threshold).sum()) / years}
 
-def rotation_climate(rotation_id, rotations, daily, db, cal, temp_shift_c=0.0):
+def rotation_climate(rotation_id, rotations, daily, db, cal, temp_shift_c=0.0, threshold_shift_c=0.0):
     steps = rotations[rotations["rotation_id"] == rotation_id].sort_values("step")
     cycle = int(steps["cycle_years"].iloc[0])
-    per_step = [crop_heat(c, daily, db, cal, temp_shift_c) for c in steps["crop_id"]]
+    per_step = [crop_heat(c, daily, db, cal, temp_shift_c, threshold_shift_c) for c in steps["crop_id"]]
     season = sum(s["season_days_per_year"] for s in per_step)
     heat = sum(s["heat_days_per_year"] for s in per_step)
     share = heat / season if season else 0.0
