@@ -1106,6 +1106,38 @@
       }
     ]
   },
+  "flip_points": {
+    "water": {
+      "current_weight_pct": 40.0,
+      "leader_at_0_pct": "current",
+      "leader_at_100_pct": "alt_a",
+      "flip_points": [
+        {
+          "at_weight_pct": 61.0,
+          "from": "current",
+          "to": "alt_a"
+        }
+      ],
+      "top_never_changes": false,
+      "sentence": "With water weighted 40.0%, Current rotation (baseline: alfalfa stand) ranks first. The top rotation changes from Current rotation (baseline: alfalfa stand) to Alternative A: Water-conserving small-grain and pea rotation at about 61.0% water."
+    },
+    "climate": {
+      "current_weight_pct": 25.0,
+      "leader_at_0_pct": "current",
+      "leader_at_100_pct": "current",
+      "flip_points": [],
+      "top_never_changes": true,
+      "sentence": "Current rotation (baseline: alfalfa stand) ranks first at every climate weight from 0% to 100%."
+    },
+    "soil_health": {
+      "current_weight_pct": 35.0,
+      "leader_at_0_pct": "current",
+      "leader_at_100_pct": "current",
+      "flip_points": [],
+      "top_never_changes": true,
+      "sentence": "Current rotation (baseline: alfalfa stand) ranks first at every soil health weight from 0% to 100%."
+    }
+  },
   "et0_source": "USBR AgriMet Fallon station (2001-2010), converted to grass reference",
   "scenario_variants": [
     {

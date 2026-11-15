@@ -8,7 +8,7 @@ Change this file only with everyone's agreement, and update this document first.
 - `scores.resilience` is **removed**. Resilience is now `stress_test`, shown beside the ranking, not part of the overall.
 - `farmer_priorities` has **three** keys: `water`, `climate`, `soil_health`.
 - New per rotation: `stress_test`, `feasibility_warnings`, `field_timeline`, `details.water_deficit_mm`.
-- New top level: `sensitivity`, `uncertainty_ranges`, `et0_source`, `water_supply_assumption_mm`.
+- New top level: `sensitivity`, `uncertainty_ranges`, `flip_points`, `et0_source`, `water_supply_assumption_mm`.
 - Warming now also raises ET0, so the warming slider moves the water score as well as the climate score.
 
 ## Top level
@@ -22,6 +22,7 @@ Change this file only with everyone's agreement, and update this document first.
 | `ranking_stability` | object | Share of priority settings (weights swept in steps of 10) under which each rotation ranks first |
 | `sensitivity` | object | Overall scores and ranking when every heat limit is shifted -2 / 0 / +2 C. Keys `heat_limit_shift_-2C`, `heat_limit_shift_+0C`, `heat_limit_shift_+2C`, each with `overall` and `ranking` |
 | `uncertainty_ranges` | object | Reruns across water range (ET0 x0.9 / 1.0 / x1.1) and heat limits (-2 / 0 / +2 C), see below |
+| `flip_points` | object | For each criterion (`water`, `climate`, `soil_health`), where the top-ranked rotation changes as that weight is swept 0-100%, see below |
 | `et0_source` | string | Where ET0 came from. If it says TEMPORARY, ET0 is a placeholder |
 | `scenario_variants` | array (9) | Precomputed rain x warming grid for the sliders |
 | `scenario_note` | string | How to read the grid |
@@ -64,6 +65,21 @@ Change this file only with everyone's agreement, and update this document first.
 - `ranking_ever_changes`: true if any case orders the rotations differently from the others.
 - `cases`: the individual cases, each with `et0_factor`, `heat_limit_shift_c`, `overall`, `ranking`.
 - `note`: what was varied. Soil health is held constant.
+
+## `flip_points`
+One entry per criterion, keyed `water`, `climate`, `soil_health`. Each entry is:
+| Key | Type | Meaning |
+|---|---|---|
+| `current_weight_pct` | number | That criterion's weight in the headline score, as a percentage |
+| `leader_at_0_pct` | string | Rotation id ranked first when the criterion has 0% weight |
+| `leader_at_100_pct` | string | Rotation id ranked first when the criterion has 100% weight |
+| `flip_points` | array | Each change of leader: `{"at_weight_pct", "from", "to"}` (rotation ids, accurate to 0.5 points). Empty if the leader never changes |
+| `top_never_changes` | boolean | True if the same rotation ranks first at every weight |
+| `sentence` | string | Ready-made sentence to display. It uses full rotation names and can be long, so shorten it for small screens if needed |
+
+- The sweep changes one weight from 0 to 100%. The other two keep their current ratio to each other.
+- A slider marker can be drawn at `current_weight_pct` and at each `at_weight_pct`.
+- The values depend on the current inputs and will change if DS2 updates a crop file.
 
 ## Rules for the game
 1. Do not hardcode any number. Read everything from the file.

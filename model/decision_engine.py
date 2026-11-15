@@ -13,7 +13,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from water_need import load_crops, load_rotations, rotation_water, WATER_SUPPLY_MM
 from soil_health import soil_health
 from climate_score import load_daily, rotation_climate
-from scoring import score_rotation
+from scoring import score_rotation, rank
 from scenario_analysis import weight_sweep
 from explanations import explain
 from field_timeline import field_timeline
@@ -82,6 +82,39 @@ def uncertainty_ranges(rots, clim, daily, db, cal, all_scores):
         "cases_total": len(cases),
         "ranking_ever_changes": len({tuple(c["ranking"]) for c in cases}) > 1,
         "cases": cases}
+    
+def flip_points(all_scores, criteria, weights, names, step=0.5):
+    """For each criterion, sweep its weight from 0 to 100%. The other criteria keep their current ratio.
+    Report where the top-ranked rotation changes (accurate to one step)."""
+    total = sum(weights.values())
+    out = {}
+    for k in criteria:
+        others = [c for c in criteria if c != k]
+        rest = sum(weights[c] for c in others)
+        def leader(w):
+            wt = {k: w, **{c: (100 - w) * weights[c] / rest for c in others}}
+            return rank(all_scores, wt)[0][0]
+        grid = [i * step for i in range(int(100 / step) + 1)]
+        flips, prev = [], leader(0)
+        first = prev
+        for w in grid[1:]:
+            now = leader(w)
+            if now != prev:
+                flips.append({"at_weight_pct": w, "from": prev, "to": now})
+                prev = now
+        label = k.replace("_", " ")
+        current_pct = round(100 * weights[k] / total, 1)
+        if flips:
+            text = (f"With {label} weighted {current_pct}%, {names[leader(current_pct)]} ranks first. "
+                    + " ".join(f"The top rotation changes from {names[f['from']]} to {names[f['to']]} "
+                               f"at about {f['at_weight_pct']}% {label}." for f in flips))
+        else:
+            text = f"{names[first]} ranks first at every {label} weight from 0% to 100%."
+        out[k] = {"current_weight_pct": current_pct, "leader_at_0_pct": first, "leader_at_100_pct": prev,
+                  "flip_points": flips, "top_never_changes": not flips, "sentence": text}
+    return out
+    
+    
 def build():
     db, cal = load_crops()
     rots = load_rotations()
@@ -150,6 +183,7 @@ def build():
         order = sorted(ov, key=lambda r: -ov[r])
         sensitivity[f"heat_limit_shift_{dt:+d}C"] = {"overall": ov, "ranking": order}
     ranges = uncertainty_ranges(rots, clim, daily, db, cal, all_scores)
+    flips = flip_points(all_scores, CRITERIA, WEIGHTS, names)
     variants = []
     for rp in RAIN_STEPS:
         for tc in TEMP_STEPS:
@@ -168,7 +202,8 @@ def build():
         "rotations": rotation_results,
         "ranking_stability": weight_sweep(all_scores, CRITERIA),
         "sensitivity": sensitivity,
-        "uncertainty_ranges": ranges,       
+        "uncertainty_ranges": ranges,
+        "flip_points": flips,       
         "et0_source": et0_source,
         "scenario_variants": variants,
         "scenario_note": "In the grid, water and climate are recalculated for each rain and warming setting; soil health is held constant; overall uses the same weights as the headline score. Warming raises ET0 using an approximate Hargreaves-style scaling.",
@@ -193,3 +228,5 @@ if __name__ == "__main__":
     u = out["uncertainty_ranges"]
     print("overall range:", u["overall_range"])
     print("ranked first in", u["cases_ranked_first"], "of", u["cases_total"], "cases | ranking ever changes:", u["ranking_ever_changes"])
+    for k, v in out["flip_points"].items():
+        print("flip:", v["sentence"])
